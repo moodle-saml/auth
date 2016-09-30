@@ -99,7 +99,7 @@ define('SAML_INTERNAL', 1);
 
      // set return rul from wantsurl
      if(isset($_REQUEST['wantsurl'])) {
-        $urltogo = $_REQUEST['wantsurl'];
+        $urltogo = urldecode($_REQUEST['wantsurl']);
      }
 
     // Get the plugin config for saml
