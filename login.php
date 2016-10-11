@@ -172,7 +172,7 @@ echo '</center>';
               if (!empty($CFG->auth_instructions)) {
                   echo format_text($CFG->auth_instructions);
               } else {
-                  print_string("loginsteps", "", "signup.php");
+                  print_string("loginsteps", "", $CFG->httpswwwroot . "/login/signup.php");
               } ?>
                  <div class="signupform">
                    <form action="<?php echo $CFG->httpswwwroot; ?>/login/signup.php" method="get" id="signup">
