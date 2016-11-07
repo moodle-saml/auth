@@ -55,11 +55,11 @@ function auth_saml_error($err, $urltogo=false, $logfile='') {
     }
     if($urltogo!=false) {
         echo '</div>';
-        $OUTPUT->continue_button($urltogo);
+        echo $OUTPUT->continue_button($urltogo);
         if($debug) {
             print_string("auth_saml_disable_debugdisplay", "auth_saml");
         }
-        $OUTPUT->footer();
+        echo $OUTPUT->footer();
         exit();
     }
 }
