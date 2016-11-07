@@ -140,7 +140,7 @@ define('SAML_INTERNAL', 1);
 
         if(!isset($saml_attributes[$username_field])) {
             $err['login'] = get_string("auth_saml_username_not_found", "auth_saml", $username_field);
-            auth_saml_error($err['login'], '?logout', $pluginconfig->samllogfile);
+            auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
         }
         $username = $saml_attributes[$username_field][0];
         $username = trim(strtolower($username));
@@ -149,7 +149,7 @@ define('SAML_INTERNAL', 1);
         if($pluginconfig->supportcourses != 'nosupport' && isset($pluginconfig->samlcourses)) {
             if(!isset($saml_attributes[$pluginconfig->samlcourses])) {
                 $err['login'] = get_string("auth_saml_courses_not_found", "auth_saml", $pluginconfig->samlcourses);
-                auth_saml_error($err['login'], '?logout', $pluginconfig->samllogfile);
+                auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
             }
             $saml_courses = $saml_attributes[$pluginconfig->samlcourses];
         }
@@ -172,7 +172,7 @@ define('SAML_INTERNAL', 1);
         if (!$user_exists && $pluginconfig->disablejit) {
             $jit_not_active = get_string("auth_saml_jit_not_active", "auth_saml", $username);
             $err['login'] = "<p>". $jit_not_active . "</p>";
-            auth_saml_error($err, '?logout', $pluginconfig->samllogfile);
+            auth_saml_error($err, $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
         }
 
         $authorize_user = true;
@@ -194,21 +194,21 @@ define('SAML_INTERNAL', 1);
 
         if (!$authorize_user) {
             $err['login'] = "<p>" . $authorize_error . "</p>";
-	    auth_saml_error($err, '?logout', $pluginconfig->samllogfile);
+            auth_saml_error($err, $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
         }
         
         // Just passes time as a password. User will never log in directly to moodle with this password anyway or so we hope?
         $user = authenticate_user_login($username, time());
         if ($user === false) {
             $err['login'] = get_string("auth_saml_error_authentication_process", "auth_saml", $username);
-            auth_saml_error($err['login'], '?logout', $pluginconfig->samllogfile);
+            auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
         }
 
         // Complete the user login sequence
         $user = get_complete_user_data('id', $user->id);
         if ($user === false) {
             $err['login'] = get_string("auth_saml_error_complete_user_data", "auth_saml", $username);
-            auth_saml_error($err['login'], '?logout', $pluginconfig->samllogfile);
+            auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
         }
 
         $USER = complete_user_login($user);
