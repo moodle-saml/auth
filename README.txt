@@ -27,5 +27,5 @@ Important for enrollment!!
 ==========================
 
 This plugin suppose that the IdP send the courses data of the user in a attribute that can be configured but the pattern of the expected data is: 
-<course_id>:<period>:<role>:<status>
-You can change this pattern editing the file auth/saml/course_mapping.php
+<country>:<domain>:<course_id>:<period>:<role>:<status>
+You can change this pattern editing the saml_hook_get_course_info method from the custom_hook.php file.
