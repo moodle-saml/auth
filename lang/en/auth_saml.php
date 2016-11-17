@@ -26,7 +26,7 @@ $string['auth_saml_username_description'] = 'SAML attribute that is mapped to Mo
 $string['auth_saml_username_not_found'] = "IdP returned a set of data that no contain the SAML username mapping field ({\$a}). This field is required to login";
 
 $string['auth_saml_supportcourses'] = 'SAML support courses';
-$string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses. (Use External if your course/role mapping is in an external DB).';
+$string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses by the enrol/saml plugin. (Use External if your course/role mapping is in an external DB).';
 
 
 $string['auth_saml_disablejit'] = "Just-in-time provisioning";

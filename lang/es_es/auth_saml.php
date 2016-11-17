@@ -26,7 +26,7 @@ $string['auth_saml_username_description'] = 'Atributo SAML que se asigna como us
 $string['auth_saml_username_not_found'] = "El IdP ha devuelto un conjunto de datos del usuario que no contiene el campo ({\$a}) que se estableció en la configuración que se usase como username de Moodle. Este campo es obligatorio para loguearte";
 
 $string['auth_saml_supportcourses'] = 'Soportar matriculación SAML';
-$string['auth_saml_supportcourses_description'] = 'Selecciona Interna o Externa para que Moodle a través del módulo automatricule al usuario (Usa Externa si tu asignación de cursos y roles está en una base de datos externa';
+$string['auth_saml_supportcourses_description'] = 'Selecciona Interna o Externa para que Moodle a través del plugin enrol/saml automatricule al usuario (Usa Externa si tu asignación de cursos y roles está en una base de datos externa';
 
 $string['auth_saml_courses'] = 'Correspondencia de cursos SAML';
 $string['auth_saml_courses_description'] = 'Atributo SAML que contiene los datos de los cursos (por defecto es schacUserStatus)';

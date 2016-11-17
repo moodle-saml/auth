@@ -11,8 +11,8 @@ Changes:
 - 2010-11    : Rewrited by Yaco Sistemas.
 
 Requirements:
-- SimpleSAML (http://rnd.feide.no/simplesamlphp). Tested with version > 1.7
-- SAML Enrollment for Moodle module
+- SimpleSAML (http://rnd.feide.no/simplesamlphp).
+- SAML Enrollment for Moodle module (if want to support enrolment on course based on SAML attributes)
 
 
 Notes: 
@@ -26,7 +26,6 @@ Check moodle_auth_saml.txt
 Important for enrollment!!
 ==========================
 
-This plugin suppose that the IdP send the courses data of the user in a attribute that
-can be configured but the pattern of the expected data is always: 
+This plugin suppose that the IdP send the courses data of the user in a attribute that can be configured but the pattern of the expected data is: 
 <course_id>:<period>:<role>:<status>
 You can change this pattern editing the file auth/saml/course_mapping.php
