@@ -29,7 +29,7 @@ $string['auth_saml_supportcourses'] = 'SAML support courses';
 $string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses by the enrol/saml plugin. (Use External if your course/role mapping is in an external DB).';
 
 
-$string['auth_saml_disablejit'] = "Just-in-time provisioning";
+$string['auth_saml_disablejit'] = "Disable Just-in-time provisioning";
 $string['auth_saml_disablejit_description'] = "Check it in order to disable the just-in-time provisioning. When JIT is disabled, account will be not created.";
 
 $string['auth_saml_syncusersfrom'] = 'Synchronize users from module';
@@ -121,7 +121,7 @@ $string['auth_saml_logfile'] = 'Log file path';
 $string['auth_saml_logfile_description'] = 'Set a filename if you want log the SAML plugin errors in a different file that the syslog. (Use an absolute path or Moodle will save this file in the moodledata folder).';
 
 $string['auth_saml_samlhookfile'] = 'Hook file path';
-$string['auth_saml_samlhookfile_description'] = 'Set a path if you want to use a hook file that contain your specific functions.';
+$string['auth_saml_samlhookfile_description'] = 'Set a path if you want to use a hook file that contain your specific functions. The path can either be absolute or relative to your Moodle root directory.';
 $string['auth_saml_errorbadhook'] = "Incorrect SAML plugin hook file: {\$a}";
 
 $string['pluginname'] = 'SAML Authentication';

@@ -206,8 +206,9 @@ class auth_plugin_saml extends auth_plugin_base {
 		        $err['samllib'] = get_string('auth_saml_errorbadlib', 'auth_saml', $form->samllib);
 	        }
 
-            if (isset($form->samlhookfile) && $form->samlhookfile != '' && !file_exists($form->samlhookfile)) {
-		        $err['samlhookerror'] = get_string('auth_saml_errorbadhook', 'auth_saml', $form->samlhookfile);
+            include_once("utils.php");
+            if (isset($form->samlhookfile) && $form->samlhookfile != '' && !file_exists(resolve_samlhookfile($form->samlhookfile))) {
+		        $err['samlhookerror'] = get_string('auth_saml_errorbadhook', 'auth_saml', resolve_samlhookfile($form->samlhookfile));
 	        }
 
 	        if ($form->supportcourses == 'external') {

@@ -50,9 +50,9 @@ $string['auth_saml_ignoreinactivecourses_description'] = "Si no está activado e
 
 $string['auth_saml_not_authorize'] = "{\$a} no tiene activo ningún curso del Campus Andaluz Virtual";
 
-$string['auth_saml_jit_not_active'] = "La cuenta {\$a} no existe y la provisión automática de usuarios está desabilitada";
-$string['auth_saml_disablejit'] = "Provisiomiento automático";
-$string['auth_saml_disablejit_description'] = "Marcalo para desabilitar el 'just-in-time provisioning', en cuyo caso las cuentas no serán creadas automáticamente";
+$string['auth_saml_jit_not_active'] = "La cuenta {\$a} no existe y la provisión automática de usuarios está inhabilitada";
+$string['auth_saml_disablejit'] = "Inhabilitar Provisiomiento automático";
+$string['auth_saml_disablejit_description'] = "Marcalo para inhabilitar el 'just-in-time provisioning', en cuyo caso las cuentas no serán creadas automáticamente";
 
 $string['auth_saml_error_executing'] = "Error al ejecutar ";
 
@@ -105,7 +105,7 @@ $string['auth_saml_moodle_course_id_field_warning'] = 'Antes de añadir mapeos d
 
 $string['auth_saml_course_not_found'] = "El curso saml2 {\$a->course} no fué encontrado para el usuario {\$a->user}\n";
 
-$string['auth_saml_disable_debugdisplay'] = ' * Desabilita debugdisplay para no mostrar errores del proceso de login/matriculación';
+$string['auth_saml_disable_debugdisplay'] = ' * Inhabilita debugdisplay para no mostrar errores del proceso de login/matriculación';
 $string['auth_saml_error_authentication_process'] = "Error en el proceso de autenticación {\$a}";
 $string['auth_saml_error_complete_user_data'] = "Error al completar los datos del usuario {\$a}";
 $string['auth_saml_error_complete_user_login'] = "Error al completar el login del usuario {\$a}";
@@ -114,7 +114,7 @@ $string['auth_saml_logfile'] = 'Ruta del fichero de log del plugin SAML';
 $string['auth_saml_logfile_description'] = 'Establece un nombre de fichero si tu quieres loggear los errores del plugin saml en un fichero diferente que el syslog (Establece una ruta absoluta o Moodle guardará este fichero dentro de la carpeta moodledata)';
 
 $string['auth_saml_samlhookfile'] = 'Ruta del fichero del hook del plugin SAML';
-$string['auth_saml_samlhookfile_description'] = 'Establece la ruta si quieres usar un fichero hook que contiene tus funciones específicas';
+$string['auth_saml_samlhookfile_description'] = 'Establece la ruta si quieres usar un fichero hook que contiene tus funciones específicas. La ruta puede ser absoluta o relativa al directorio raíz de Moodle.';
 $string['auth_saml_errorbadhook'] = "Incorrect SAML plugin hook file: {\$a}";
 
 $string['pluginname'] = 'Autenticación SAML';
