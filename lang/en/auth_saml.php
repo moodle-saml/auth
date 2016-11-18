@@ -54,8 +54,8 @@ $string['auth_saml_logo_info_description'] = 'Description that will be shown bel
 $string['auth_saml_autologin'] = 'SAML automatic login';
 $string['auth_saml_autologin_description'] = 'Automatically redirect to SAML IdP without showing a login form.';
 
-$string['auth_saml_ignoreinactivecourses'] = 'Ignore Inactive Courses';
-$string['auth_saml_ignoreinactivecourses_description'] = "If not checked the plugin will unenroll the 'inactive' courses";
+$string['auth_saml_ignoreinactivecourses'] = 'Ignore Inactive';
+$string['auth_saml_ignoreinactivecourses_description'] = "If not checked the plugin will unenroll the 'inactive' users from courses";
 
 $string['auth_saml_jit_not_active'] = "User account {\$a} does not exists and just-in-time provisioning is disabled";
 
@@ -107,6 +107,8 @@ $string['auth_saml_missed_data'] = 'The following data contain missed attributes
 
 $string['auth_saml_duplicated_saml_data'] = 'The following saml data is duplicated: ';
 $string['auth_saml_duplicated_lms_data'] = 'The following lms data is duplicated: ';
+
+$string['auth_saml_moodle_course_id_field_warning'] = 'Before add any course maping, decide what id field (course shortname or number id) gonna be used to identify the moodle course. Once decided save the form and then short name or number id will appear at the Moodle Course Id select. Take in mind that numberid is by default not required at moodle but you should provide it if that is your selected option (or a blank option will appear for this course). If you switch the value of the field used to identify a course after providing some mappings, those mappings will be ignored (but still stored on the database)';
 
 $string['auth_saml_course_not_found'] = "Course saml {\$a->course} not found for the saml user {\$a->user}\n";
 

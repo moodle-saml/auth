@@ -120,9 +120,9 @@ function print_role_mapping_options($role_mapping, $config, $err) {
         	echo '<tr '.((isset($err['role_mapping']['lms']) && in_array($role_param[0], $err['role_mapping']['lms']))
                 || (isset($err['role_mapping']['saml']) && in_array($role_param[1], $err['role_mapping']['saml']))
                 || (isset($err['missed_role_mapping']) && array_key_exists($saml_role, $err['missed_role_mapping'])) ? 'style="background:red;"' : '').'>';
-            echo '<td colspan="2"><input style="margin-right: 20px;" type="checkbox" name="role_mapping_id[]" value="' . $saml_role . '">';
-            echo '<input type="hidden" name="update_roles_id[]" value="' . $saml_role . '">';
-            echo '<select name="role_'. $saml_role .'[]" >';
+            echo '<td><input style="margin-right: 20px;" type="checkbox" name="role_mapping_id[]" value="' . $saml_role . '">';
+            echo '<input type="hidden" name="update_roles_id[]" value="' . $saml_role . '"></td>';
+            echo '<td><select name="role_'. $saml_role .'[]" >';
             foreach ($moodle_roles as $mrole2) {
                 echo '<option value="'. $mrole2 .'" '.((!$read_from_db_only && $role_param[0] == $mrole2) || ($read_from_db_only && $mrole2 == $mrole) ? 'selected="selected"' : '') .' >' . $mrole2 . '</option>';
             }
@@ -143,27 +143,26 @@ function print_role_mapping_options($role_mapping, $config, $err) {
             $new_role_param = optional_param_array('new_role_' . $i, array(), PARAM_ALPHANUMEXT);
 
 	        echo '<tr '.(empty($new_role_param[1])? 'style="display:none;"': ((isset($err['role_mapping']['lms']) && in_array($new_role_param[0], $err['role_mapping']['lms'])) || (isset($err['role_mapping']['saml']) && in_array($new_role_param[1], $err['role_mapping']['saml'])) ? 'style="background:red;"' : '')) .'>';
-                echo '<td colspan="2" style="padding-left: 38px;"><select id="newrole_select" name="new_role' . $i . '[]">';
+                echo '<td colspan="2" style="padding-left: 38px;"><select id="newrole_select_'. $i.'" name="new_role' . $i . '[]">';
                 foreach ($moodle_roles as $mrole) {
                     $is_selected = $new_role_param[0] === $mrole; 
                     echo '<option value="'. $mrole .'" ' . ($is_selected ? 'selected="selected"' : '') . ' >' . $mrole . '</option>';
                 }
                 echo '</select>';
-                echo '<input id="new_roles_total" type="hidden" name="new_roles_total" value="' . $i . '" /></td>';
-                echo '<td><input id="newrole_saml_id" type="text" name="new_role' . $i . '[]" value="' . $new_role_param[1] . '" /></td>';
+                echo '<td><input id="newrole_saml_id_'.$i.'" type="text" name="new_role' . $i . '[]" value="' . $new_role_param[1] . '" /></td>';
 	        echo '<td></td>';
 	        echo '</tr>';
                $i++;
        }
     }
 
-    echo '<tr><td colspan="2" style="padding-left: 39px;"><select id="newrole_select" name="new_role' . $i . '[]">';
+    echo '<tr><td colspan="2" style="padding-left: 39px;"><select id="newrole_select_'.$i.'" name="new_role' . $i . '[]">';
     foreach ($moodle_roles as $mrole) {
         echo '<option value="' . $mrole . '"  >' . $mrole . '</option>';
     }
     echo '</select>';
     echo '<input id="new_roles_total" type="hidden" name="new_roles_total" value="' . $i . '" /></td>';
-    echo '<td><input id="newrole_saml_id" type="text" name="new_role' . $i . '[]" value="" />';
+    echo '<td><input id="newrole_saml_id_'.$i.'" type="text" name="new_role' . $i . '[]" value="" />';
     echo '<input type="button" name="new" value="+" onclick="addNewField(\'newroles\',\'new_role\',\'role\')" /></td></tr>';
     echo '<td></td>';
 }

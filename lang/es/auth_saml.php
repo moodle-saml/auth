@@ -45,8 +45,8 @@ $string['auth_saml_logo_info_description'] = 'Descripción que se muestra a cont
 $string['auth_saml_autologin'] = 'SAML automatic login';
 $string['auth_saml_autologin_description'] = 'Automatically redirect to SAML idP without showing a login form';
 
-$string['auth_saml_ignoreinactivecourses'] = 'Ignorar Cursos Inactivos';
-$string['auth_saml_ignoreinactivecourses_description'] = "Si no está activado el plugin dará de baja a los cursos 'inactivos'";
+$string['auth_saml_ignoreinactivecourses'] = 'Ignorar Inactivos';
+$string['auth_saml_ignoreinactivecourses_description'] = "Si no está activado el plugin dará de baja de los cursos a los usuarios 'inactivos'";
 
 $string['auth_saml_not_authorize'] = "{\$a} no tiene activo ningún curso del Campus Andaluz Virtual";
 
@@ -102,6 +102,8 @@ $string['auth_saml_missed_data'] = 'A los siguientes datos les faltan atributos:
 
 $string['auth_saml_duplicated_saml_data'] = 'El siguiente dato saml está duplicado: ';
 $string['auth_saml_duplicated_lms_data'] = 'El siguiente dato lms está duplicado: ';
+
+$string['auth_saml_moodle_course_id_field_warning'] = 'Antes de añadir mapeos de los cursos, decide que campo (shortname o numberid del curso) va a ser usado para identificar los cursos de moodle. Una vez decidido salva el formulario y entoncses los valores del shortname o numberid aparecerán en el selector del "Moodle Course Id". Ten en cuenta que el numberid es por defecto opcional en moodle pero debe de ser proporcionado si esta fue la opción elejida (o una opción en blanco aparecerá para ese curso). Si cambias el valor del campo para identificar los cursos despues de registrar mapeos, esos mapeos serán ignorados (pero seguirán almacenados en base de datos)'; 
 
 $string['auth_saml_course_not_found'] = "El curso saml2 {\$a->course} no fué encontrado para el usuario {\$a->user}\n";
 
