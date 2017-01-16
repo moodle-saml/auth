@@ -96,7 +96,7 @@ class auth_plugin_saml extends auth_plugin_base {
 			    "department", "address", "city", "country", "description",
 			    "idnumber", "lang", "guid");
         }
-
+        $fields = array_merge($fields, $this->get_custom_user_profile_fields());
 	    $moodleattributes = array();
 	    foreach ($fields as $field) {
 	        if (isset($configarray["field_map_$field"])) {
