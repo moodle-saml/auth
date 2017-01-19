@@ -164,20 +164,22 @@ function print_course_mapping_options($course_mapping, $config, $err) {
     if ($read_from_db_only) {
 	    while ($i <= $new_courses_total) {
 
-            $new_course_param = optional_param_array('new_course_' . $i, array(), PARAM_ALPHANUMEXT);
+                $new_course_param = optional_param_array('new_course_' . $i, array(), PARAM_ALPHANUMEXT);
+                if (!empty($new_course_param)) {
 
 		    echo '<tr '.((empty($new_course_param[1]) && empty($new_course_param[2]))? 'style="display:none;"' : ((isset($err['course_mapping']['lms']) && in_array($new_course_param[0], $err['course_mapping']['lms'])) 
             || (isset($err['course_mapping']['saml']) && in_array($new_course_param[1].'_'.$new_course_param[2], $err['course_mapping']['saml'])) ? 'style="background:red;"' : '')) .' >';
 	            echo '<td colspan="2" style="padding-left: 38px;"><select id="newcourse_select_'.$i.'" name="new_course' . $i . '[]">';
 	            foreach ($moodle_courses as $mcourse) {
-	                $is_selected = $new_course_param[0] === $mcourse; 
-	                echo '<option value="'. $mcourse .'" ' . ($is_selected ? 'selected="selected"' : '') . ' >'.$mcourse.'</option>';
+                        $is_selected = $new_course_param[0] === $mcourse; 
+                        echo '<option value="'. $mcourse .'" ' . ($is_selected ? 'selected="selected"' : '') . ' >'.$mcourse.'</option>';
 	            }
 	            echo '</select>';
 	            echo '<td><input id="newcourse_saml_id_'.$i.'" type="text" name="new_course' . $i . '[]" value="' . $new_course_param[1] . '" /></td>';
 	            echo '<td><input id="newcourse_saml_period_'.$i.'" type="text" name="new_course' . $i . '[]" value="'. $new_course_param[2] . '" /></td>'; 
 	            echo '</tr>';
-		    $i++;
+               } 
+	    $i++;
 	    }
     }
 

@@ -141,6 +141,7 @@ function print_role_mapping_options($role_mapping, $config, $err) {
         //we have a POST request
         while ($i <= $new_roles_total) {
             $new_role_param = optional_param_array('new_role_' . $i, array(), PARAM_ALPHANUMEXT);
+            if (!empty($new_role_param)) {
 
 	        echo '<tr '.(empty($new_role_param[1])? 'style="display:none;"': ((isset($err['role_mapping']['lms']) && in_array($new_role_param[0], $err['role_mapping']['lms'])) || (isset($err['role_mapping']['saml']) && in_array($new_role_param[1], $err['role_mapping']['saml'])) ? 'style="background:red;"' : '')) .'>';
                 echo '<td colspan="2" style="padding-left: 38px;"><select id="newrole_select_'. $i.'" name="new_role' . $i . '[]">';
@@ -152,8 +153,9 @@ function print_role_mapping_options($role_mapping, $config, $err) {
                 echo '<td><input id="newrole_saml_id_'.$i.'" type="text" name="new_role' . $i . '[]" value="' . $new_role_param[1] . '" /></td>';
 	        echo '<td></td>';
 	        echo '</tr>';
-               $i++;
-       }
+            }
+            $i++;
+        }
     }
 
     echo '<tr><td colspan="2" style="padding-left: 39px;"><select id="newrole_select_'.$i.'" name="new_role' . $i . '[]">';
