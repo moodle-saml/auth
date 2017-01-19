@@ -9,13 +9,17 @@ Changes:
                tightened up the session switching between ss and moodle
                Piers Harding <piers@catalyst.net.nz>
 - 2010-11    : Rewrited by Yaco Sistemas.
+- 2011-17    : Maintained by Sixto Martin Garcia <sixto.martin.garcia@gmail.com>
 
 Requirements:
-- SimpleSAML (http://rnd.feide.no/simplesamlphp).
+- simpleSAMLphp (http://rnd.feide.no/simplesamlphp).
+
+Optional:
 - SAML Enrollment for Moodle module (if want to support enrolment on course based on SAML attributes)
 
 
-Notes: 
+Notes:
+- This plugin add SAML support to Moodle enabling a Service Provider using simpleSAMLphp endpoints.
 - Uses IdP attribute "eduPersonPrincipalName" as username by default
 
 Install instructions:
