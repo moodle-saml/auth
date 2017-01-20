@@ -26,7 +26,7 @@ $string['auth_saml_username_description'] = 'Atributo SAML que se asigna como us
 $string['auth_saml_username_not_found'] = "El IdP ha devuelto un conjunto de datos del usuario que no contiene el campo ({\$a}) que se estableció en la configuración que se usase como username de Moodle. Este campo es obligatorio para loguearte";
 
 $string['auth_saml_supportcourses'] = 'Soportar matriculación SAML';
-$string['auth_saml_supportcourses_description'] = 'Selecciona Interna o Externa para que Moodle a través del módulo automatricule al usuario (Usa Externa si tu asignación de cursos y roles está en una base de datos externa';
+$string['auth_saml_supportcourses_description'] = 'Selecciona Interna o Externa para que Moodle a través del plugin enrol/saml automatricule al usuario (Usa Externa si tu asignación de cursos y roles está en una base de datos externa';
 
 $string['auth_saml_courses'] = 'Correspondencia de cursos SAML';
 $string['auth_saml_courses_description'] = 'Atributo SAML que contiene los datos de los cursos (por defecto es schacUserStatus)';
@@ -45,14 +45,14 @@ $string['auth_saml_logo_info_description'] = 'Descripción que se muestra a cont
 $string['auth_saml_autologin'] = 'SAML automatic login';
 $string['auth_saml_autologin_description'] = 'Automatically redirect to SAML idP without showing a login form';
 
-$string['auth_saml_ignoreinactivecourses'] = 'Ignorar Cursos Inactivos';
-$string['auth_saml_ignoreinactivecourses_description'] = "Si no está activado el plugin dará de baja a los cursos 'inactivos'";
+$string['auth_saml_ignoreinactivecourses'] = 'Ignorar Inactivos';
+$string['auth_saml_ignoreinactivecourses_description'] = "Si no está activado el plugin dará de baja de los cursos a los usuarios 'inactivos'";
 
 $string['auth_saml_not_authorize'] = "{\$a} no tiene activo ningún curso del Campus Andaluz Virtual";
 
-$string['auth_saml_jit_not_active'] = "La cuenta {\$a} no existe y la provisión automática de usuarios está desabilitada";
-$string['auth_saml_disablejit'] = "Provisiomiento automático";
-$string['auth_saml_disablejit_description'] = "Marcalo para desabilitar el 'just-in-time provisioning', en cuyo caso las cuentas no serán creadas automáticamente";
+$string['auth_saml_jit_not_active'] = "La cuenta {\$a} no existe y la provisión automática de usuarios está inhabilitada";
+$string['auth_saml_disablejit'] = "Inhabilitar Provisiomiento automático";
+$string['auth_saml_disablejit_description'] = "Marcalo para inhabilitar el 'just-in-time provisioning', en cuyo caso las cuentas no serán creadas automáticamente";
 
 $string['auth_saml_error_executing'] = "Error al ejecutar ";
 
@@ -101,9 +101,11 @@ $string['auth_saml_missed_data'] = 'A los siguientes datos les faltan atributos:
 $string['auth_saml_duplicated_saml_data'] = 'El siguiente dato saml está duplicado: ';
 $string['auth_saml_duplicated_lms_data'] = 'El siguiente dato lms está duplicado: ';
 
+$string['auth_saml_moodle_course_id_field_warning'] = 'Antes de añadir mapeos de los cursos, decide que campo (shortname o numberid del curso) va a ser usado para identificar los cursos de moodle. Una vez decidido salva el formulario y entoncses los valores del shortname o numberid aparecerán en el selector del "Moodle Course Id". Ten en cuenta que el numberid es por defecto opcional en moodle pero debe de ser proporcionado si esta fue la opción elejida (o una opción en blanco aparecerá para ese curso). Si cambias el valor del campo para identificar los cursos despues de registrar mapeos, esos mapeos serán ignorados (pero seguirán almacenados en base de datos)'; 
+
 $string['auth_saml_course_not_found'] = "El curso saml2 {\$a->course} no fué encontrado para el usuario {\$a->user}\n";
 
-$string['auth_saml_disable_debugdisplay'] = ' * Desabilita debugdisplay para no mostrar errores del proceso de login/matriculación';
+$string['auth_saml_disable_debugdisplay'] = ' * Inhabilita debugdisplay para no mostrar errores del proceso de login/matriculación';
 $string['auth_saml_error_authentication_process'] = "Error en el proceso de autenticación {\$a}";
 $string['auth_saml_error_complete_user_data'] = "Error al completar los datos del usuario {\$a}";
 $string['auth_saml_error_complete_user_login'] = "Error al completar el login del usuario {\$a}";
@@ -112,7 +114,7 @@ $string['auth_saml_logfile'] = 'Ruta del fichero de log del plugin SAML';
 $string['auth_saml_logfile_description'] = 'Establece un nombre de fichero si tu quieres loggear los errores del plugin saml en un fichero diferente que el syslog (Establece una ruta absoluta o Moodle guardará este fichero dentro de la carpeta moodledata)';
 
 $string['auth_saml_samlhookfile'] = 'Ruta del fichero del hook del plugin SAML';
-$string['auth_saml_samlhookfile_description'] = 'Establece la ruta si quieres usar un fichero hook que contiene tus funciones específicas';
+$string['auth_saml_samlhookfile_description'] = 'Establece la ruta si quieres usar un fichero hook que contiene tus funciones específicas. La ruta puede ser absoluta o relativa al directorio raíz de Moodle.';
 $string['auth_saml_errorbadhook'] = "Incorrect SAML plugin hook file: {\$a}";
 
 $string['pluginname'] = 'Autenticación SAML';

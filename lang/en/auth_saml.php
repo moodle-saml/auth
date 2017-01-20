@@ -26,10 +26,10 @@ $string['auth_saml_username_description'] = 'SAML attribute that is mapped to Mo
 $string['auth_saml_username_not_found'] = "IdP returned a set of data that no contain the SAML username mapping field ({\$a}). This field is required to login";
 
 $string['auth_saml_supportcourses'] = 'SAML support courses';
-$string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses. (Use External if your course/role mapping is in an external DB).';
+$string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses by the enrol/saml plugin. (Use External if your course/role mapping is in an external DB).';
 
 
-$string['auth_saml_disablejit'] = "Just-in-time provisioning";
+$string['auth_saml_disablejit'] = "Disable Just-in-time provisioning";
 $string['auth_saml_disablejit_description'] = "Check it in order to disable the just-in-time provisioning. When JIT is disabled, account will be not created.";
 
 $string['auth_saml_syncusersfrom'] = 'Synchronize users from module';
@@ -54,8 +54,8 @@ $string['auth_saml_logo_info_description'] = 'Description that will be shown bel
 $string['auth_saml_autologin'] = 'SAML automatic login';
 $string['auth_saml_autologin_description'] = 'Automatically redirect to SAML IdP without showing a login form.';
 
-$string['auth_saml_ignoreinactivecourses'] = 'Ignore Inactive Courses';
-$string['auth_saml_ignoreinactivecourses_description'] = "If not checked the plugin will unenroll the 'inactive' courses";
+$string['auth_saml_ignoreinactivecourses'] = 'Ignore Inactive';
+$string['auth_saml_ignoreinactivecourses_description'] = "If not checked the plugin will unenroll the 'inactive' users from courses";
 
 $string['auth_saml_jit_not_active'] = "User account {\$a} does not exists and just-in-time provisioning is disabled";
 
@@ -108,6 +108,8 @@ $string['auth_saml_missed_data'] = 'The following data contain missed attributes
 $string['auth_saml_duplicated_saml_data'] = 'The following saml data is duplicated: ';
 $string['auth_saml_duplicated_lms_data'] = 'The following lms data is duplicated: ';
 
+$string['auth_saml_moodle_course_id_field_warning'] = 'Before add any course maping, decide what id field (course shortname or number id) gonna be used to identify the moodle course. Once decided save the form and then short name or number id will appear at the Moodle Course Id select. Take in mind that numberid is by default not required at moodle but you should provide it if that is your selected option (or a blank option will appear for this course). If you switch the value of the field used to identify a course after providing some mappings, those mappings will be ignored (but still stored on the database)';
+
 $string['auth_saml_course_not_found'] = "Course saml {\$a->course} not found for the saml user {\$a->user}\n";
 
 $string['auth_saml_disable_debugdisplay'] = ' * Disable debugdisplay in order to hide errors in the login/enrollment process';
@@ -119,7 +121,7 @@ $string['auth_saml_logfile'] = 'Log file path';
 $string['auth_saml_logfile_description'] = 'Set a filename if you want log the SAML plugin errors in a different file that the syslog. (Use an absolute path or Moodle will save this file in the moodledata folder).';
 
 $string['auth_saml_samlhookfile'] = 'Hook file path';
-$string['auth_saml_samlhookfile_description'] = 'Set a path if you want to use a hook file that contain your specific functions.';
+$string['auth_saml_samlhookfile_description'] = 'Set a path if you want to use a hook file that contain your specific functions. The path can either be absolute or relative to your Moodle root directory.';
 $string['auth_saml_errorbadhook'] = "Incorrect SAML plugin hook file: {\$a}";
 
 $string['pluginname'] = 'SAML Authentication';

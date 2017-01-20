@@ -73,6 +73,7 @@ class auth_plugin_saml extends auth_plugin_base {
 		            $result[$key] = '';
 		        }
 	        }
+
 	        unset($SESSION->auth_saml_login_attributes);
 
 	        $result["username"] = $username;
@@ -86,25 +87,28 @@ class auth_plugin_saml extends auth_plugin_base {
     * Returns array containg attribute mappings between Moodle and Identity Provider.
     */
     function get_attributes() {
-	    $configarray = (array) $this->config;
+        $configarray = (array) $this->config;
 
         if(isset($this->userfields)) {
             $fields = $this->userfields;
         }
         else {
-        	$fields = array("firstname", "lastname", "email", "phone1", "phone2",
+            $fields = array("firstname", "lastname", "email", "phone1", "phone2",
 			    "department", "address", "city", "country", "description",
-			    "idnumber", "lang", "guid");
+			    "idnumber", "lang", "guid", "web", "skype", "yahoo", "msn",
+                            "aim", "icq");
         }
 
-	    $moodleattributes = array();
-	    foreach ($fields as $field) {
-	        if (isset($configarray["field_map_$field"])) {
-		        $moodleattributes[$field] = $configarray["field_map_$field"];
-	        }
-	    }
+        $fields = array_merge($fields, $this->get_custom_user_profile_fields());
 
-	    return $moodleattributes;
+        $moodleattributes = array();
+        foreach ($fields as $field) {
+            if (isset($configarray["field_map_$field"])) {
+	        $moodleattributes[$field] = $configarray["field_map_$field"];
+            }
+        }
+
+        return $moodleattributes;
     }
 
     /**
@@ -206,8 +210,9 @@ class auth_plugin_saml extends auth_plugin_base {
 		        $err['samllib'] = get_string('auth_saml_errorbadlib', 'auth_saml', $form->samllib);
 	        }
 
-            if (isset($form->samlhookfile) && $form->samlhookfile != '' && !file_exists($form->samlhookfile)) {
-		        $err['samlhookerror'] = get_string('auth_saml_errorbadhook', 'auth_saml', $form->samlhookfile);
+            include_once("utils.php");
+            if (isset($form->samlhookfile) && $form->samlhookfile != '' && !file_exists(resolve_samlhookfile($form->samlhookfile))) {
+		        $err['samlhookerror'] = get_string('auth_saml_errorbadhook', 'auth_saml', resolve_samlhookfile($form->samlhookfile));
 	        }
 
 	        if ($form->supportcourses == 'external') {

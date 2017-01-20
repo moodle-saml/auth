@@ -11,10 +11,11 @@ function addNewField(area,field, type) {
     var count = parseInt(total.value) + 1;
     var field_name = "new_" + type;
 
-    var select = document.getElementById('new' + type + '_select');
+    var select = document.getElementById('new' + type + '_select_0');
     var new_select = select.cloneNode(true);
     
     total.value = count;
+
 
     if (document.createElement) {
         var tr = document.createElement("tr");
@@ -27,11 +28,17 @@ function addNewField(area,field, type) {
                 switch ($i) {
                     case 0:
                         new_select.name = field_name + count + "[]";
+                        new_select.id = 'new' + type + '_select_' + count;
                         td$i.style.paddingLeft = "38px";
                         td$i.colSpan = "2";
                         td$i.appendChild(new_select);
                         break;
                     default:
+                        if ($i == 1) {
+                            input$i.id = 'new' + type + "_saml_id_" + count;
+                        } else {
+                            input$i.id = 'new' + type + "_saml_period_" + count;
+                        }
                         td$i.appendChild(input$i);
                         break;
                 }
@@ -46,11 +53,13 @@ function addNewField(area,field, type) {
                 switch ($i) {
                     case 0:
                         new_select.name = field_name + count + "[]";
+                        new_select.id = 'new' + type + '_select_' + count;
                         td$i.style.paddingLeft = "38px";
                         td$i.colSpan = "2";
                         td$i.appendChild(new_select);
                         break;
                     default:
+                        input$i.id = 'new' + type + "_saml_id_" + count;
                         td$i.appendChild(input$i);
                         break;
                 }

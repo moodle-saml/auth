@@ -1,19 +1,19 @@
 SAML Authentication for Moodle
--------------------------------------------------------------------------------
+------------------------------
 
-SAML for Moodle is an open-source implementation for federated identity-based
-authentication infrastructure based on Security Assertion Markup Language
-(SAML) that allows the Moodle users log in through simpleSAMLphp.
+SAML for Moodle is an open-source implementation for federated identity-based authentication infrastructure based on Security Assertion Markup Language (SAML) that allows the Moodle users log in through simpleSAMLphp.
 
+This plugin add SAML support to Moodle (SP) and require a [simpleSAMLphp instance to be configured as SP](https://simplesamlphp.org/docs/stable/simplesamlphp-sp)
+
+It works with Moodle 2.X and it was tested with 3.1.3
 
 Install Instruction
--------------------------------------------------------------------------------
+-------------------
 
-  1. Unpack this saml directory into the /auth/ directory as you would for any Moodle
-     auth module
+  1. Unpack this directory into a /auth/saml directory as you would for any Moodle auth module
      (http://docs.moodle.org/en/Installing_contributed_modules_or_plugins).
 
-  2. Login to Moodle as an administrator, and activate the module by navigating
+  2. Login to Moodle as an administrator, and activate the module by navigating 
      Site administration->Plugins->Manage authentication->SAML Authentication     
 
 
@@ -21,7 +21,7 @@ Install Instruction
      file.
 
 Configuration
--------------------------------------------------------------------------------
+-------------
 After the installation we must configure the saml plugin, so go to "Settings"
 if you are in "Manage Authentication" page, or you can also go to
 Users > Authentication > SAML Authentication. These are the fields of thi
@@ -55,9 +55,8 @@ form:
      that will be called to alter the default behaviour of this plugin. See
      the file custom_hook.php for more information.
 
-     - SAML support Courses: this select has three options:
-        - No suport (default value): the plugin will not have support for
-        enrolling the user into courses automatically
+     - SAML support Courses: You will need to configure the Curse and Role mapping if you plan to use the enrol/saml plugin. This select has three options:
+        - No suport (default value): the plugin will not define course/role mapping (enrol/saml plugin not installed, support for enrolling the user into courses automatically not required).
         - Internal: the plugin will use an internal database table to map
         the courses in the next field with Moodle courses
         - External: the plugin will use a tabla in an external database
@@ -77,7 +76,7 @@ form:
      inactive in the SAML attribute.
 
      - Data Mapping section:
-    ---------------------------------------------------------------------------
+    ........................
     The Identity Provider (IdP) provides some user's data such as the first
     name, surname, email address, etc. In this section, you can specify the
     correspondence with the same data in Moodle. By default, the configuration
@@ -88,7 +87,7 @@ form:
         Email Address = mail
 
     - Course Mapping section:
-    ---------------------------------------------------------------------------
+    .........................
     The course mapping section allows the administrator to link saml courses
     and moodle courses. To make it working we need to create an intermediate
     database on where we can store this data. This database will have the
@@ -138,7 +137,7 @@ form:
 
 
 Internal Changes
--------------------------------------------------------------------------------
+----------------
 
 - The 'config.html' file was renamed to 'config.php' because it now has PHP
   code.
@@ -153,7 +152,3 @@ Internal Changes
 the errors, and 'process_config' for saving the data into the database if
 there are no errors. Also, 'sync_roles' function have been modified for
 mapping roles and courses.
-
-NOTES
--------------------------------------------------------------------------------
-These changes are tested and valid for simpleSAMLphp >= 1.7

@@ -1,13 +1,13 @@
 <?php
 
-function auth_saml_error($err, $urltogo=false, $logfile='') {
+function auth_saml_error($err, $urltogo=false, $logfile='', $showerror=false) {
     global $CFG, $PAGE, $OUTPUT;
     
-    if(!isset($CFG->debugdisplay) || !$CFG->debugdisplay) {
-        $debug = false;
+    if((isset($CFG->debugdisplay) && !$CFG->debugdisplay) || $showerror) {
+        $debug = true;
     }
     else {
-        $debug = true;
+        $debug = false;
     }
     
     if($urltogo!=false) {
@@ -55,11 +55,11 @@ function auth_saml_error($err, $urltogo=false, $logfile='') {
     }
     if($urltogo!=false) {
         echo '</div>';
-        $OUTPUT->continue_button($urltogo);
-        if($debug) {
+        echo $OUTPUT->continue_button($urltogo);
+        if($debug && !$showerror) {
             print_string("auth_saml_disable_debugdisplay", "auth_saml");
         }
-        $OUTPUT->footer();
+        echo $OUTPUT->footer();
         exit();
     }
 }

@@ -131,3 +131,49 @@ function saml_hook_authorize_user($username, $saml_attributes, $authorize_user) 
 function saml_hook_post_user_created($user, $saml_attributes = array()) {
 
 }
+
+/*
+ name: saml_hook_get_course_info
+ arguments:
+   - $course: string that contains info about the course
+ 
+ return array with the following indexes:
+        0 - match      matched string   
+        1 - country    country info
+        2 - domain     domain info 
+        3 - course_id  the course id to be mapped with moodle course
+        4 - period     period of the course
+        5 - role       role to be mappend with moodle role
+        6 - status     'active' | 'inactive'
+
+  The auth/saml plugin save those data that will be available
+  for the enrol/saml plugin.
+
+  Right now only course_id, period, role and status are
+  required, so if your Identity Provider don't retrieve country or domain info, return
+  empy values for them Ex. alternative pattern
+  Info: 'courseData:math1:2016-17:student:active'
+  
+  $regex = '/courseData:(.+):(.+):(.+):(.+):(.+):(.+)/';
+  if (preg_match($regex, $course, $matches) {
+    $regs = array();
+    $regs[0] = $matches[0];
+    $regs[1] = null;          // country
+    $regs[2] = null;          // domain
+    $regs[3] = $matches[1];   // course_id
+    $regs[4] = $matches[2];   // period
+    $regs[5] = $matches[3];   // role
+    $regs[6] = $matches[4];   // status
+  }
+*/
+function saml_hook_get_course_info($course) {
+  $regs = null;
+
+  $regex = '/urn:mace:terena.org:schac:userStatus:(.+):(.+):(.+):(.+):(.+):(.+)/';
+
+  if (preg_match($regex, $course, $matches)) {
+    $regs = $matches;
+  }
+
+  return $regs;
+}
