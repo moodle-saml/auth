@@ -94,8 +94,8 @@ class auth_plugin_saml extends auth_plugin_base {
         }
         else {
             $fields = array("firstname", "lastname", "email", "phone1", "phone2",
-			    "department", "address", "city", "country", "description",
-			    "idnumber", "lang", "guid", "web", "skype", "yahoo", "msn",
+                "department", "address", "city", "country", "description",
+                "idnumber", "lang", "guid", "web", "skype", "yahoo", "msn",
                             "aim", "icq");
         }
 
@@ -104,7 +104,7 @@ class auth_plugin_saml extends auth_plugin_base {
         $moodleattributes = array();
         foreach ($fields as $field) {
             if (isset($configarray["field_map_$field"])) {
-	        $moodleattributes[$field] = $configarray["field_map_$field"];
+                $moodleattributes[$field] = trim($configarray["field_map_$field"]);
             }
         }
 
@@ -401,29 +401,29 @@ class auth_plugin_saml extends auth_plugin_base {
         file_put_contents($CFG->dataroot.'/saml_config.php', $saml_param_encoded);
 
         // Also adding this parameters in database but no need it really.
-	    set_config('samllib',	      $saml_param->samllib,	'auth/saml');
-	    set_config('sp_source',  $saml_param->sp_source,	'auth/saml');
+	    set_config('samllib',	     trim($saml_param->samllib),	'auth/saml');
+	    set_config('sp_source',  trim($saml_param->sp_source),	'auth/saml');
 	    set_config('dosinglelogout',  $saml_param->dosinglelogout,	'auth/saml');
 
         // Save plugin settings
-	    set_config('username',	      $config->username,	'auth/saml');
+	    set_config('username',	      trim($config->username),	'auth/saml');
 	    set_config('supportcourses',  $config->supportcourses,	'auth/saml');
 	    set_config('syncusersfrom',   $config->syncusersfrom,	'auth/saml');
 	    set_config('samlcourses',     $config->samlcourses,	'auth/saml');
 	    set_config('samllogoimage',   $config->samllogoimage,	'auth/saml');
 	    set_config('samllogoinfo',    $config->samllogoinfo,	'auth/saml');
 	    set_config('autologin',       $config->autologin,  'auth/saml');
-	    set_config('samllogfile',         $config->samllogfile,	'auth/saml');
-	    set_config('samlhookfile',        $config->samlhookfile,	'auth/saml');
-	    set_config('moodlecoursefieldid',   $config->moodlecoursefieldid,   'auth/saml');
+	    set_config('samllogfile',         trim($config->samllogfile),	'auth/saml');
+	    set_config('samlhookfile',        trim($config->samlhookfile),	'auth/saml');
+	    set_config('moodlecoursefieldid',   trim($config->moodlecoursefieldid),   'auth/saml');
 	    set_config('ignoreinactivecourses', $config->ignoreinactivecourses, 'auth/saml');
-            set_config('disablejit', $config->disablejit, 'auth/saml');
+        set_config('disablejit', $config->disablejit, 'auth/saml');
 
 	    if($config->supportcourses == 'external') {
-	        set_config('externalcoursemappingdsn',  $config->externalcoursemappingdsn,	'auth/saml');
-	        set_config('externalrolemappingdsn',    $config->externalrolemappingdsn,	'auth/saml');
-	        set_config('externalcoursemappingsql',  $config->externalcoursemappingsql,	'auth/saml');
-	        set_config('externalrolemappingsql',    $config->externalrolemappingsql,	'auth/saml');
+	        set_config('externalcoursemappingdsn',  trim($config->externalcoursemappingdsn),	'auth/saml');
+	        set_config('externalrolemappingdsn',    trim($config->externalrolemappingdsn),	'auth/saml');
+	        set_config('externalcoursemappingsql',  trim($config->externalcoursemappingsql),	'auth/saml');
+	        set_config('externalrolemappingsql',    trim($config->externalrolemappingsql),	'auth/saml');
 	    }
 	    else if($config->supportcourses == 'internal') {
 
