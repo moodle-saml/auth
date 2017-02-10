@@ -29,7 +29,7 @@ class auth_plugin_saml extends auth_plugin_base {
     /**
     * Constructor.
     */
-    function __construct() {
+    public function __construct() {
 		$this->authtype = 'saml';
 		$this->config = get_config('auth/saml');
     }
