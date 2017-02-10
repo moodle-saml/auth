@@ -2,7 +2,9 @@
 
 include_once("../../config.php");
 
+
 global $CFG, $PAGE, $OUTPUT;
+include_once($CFG->libdir . "/authlib.php");
 
 //HTTPS is required in this page when $CFG->loginhttps enabled
 $PAGE->https_required();
@@ -20,6 +22,9 @@ if(isset($saml_config->autologin)  && $saml_config->autologin)
        header('Location: '.$samlUrl);
        exit;
 }
+
+$errorcode = optional_param('errorcode', 0, PARAM_INT);
+
 
 $context = CONTEXT_SYSTEM::instance();
 $PAGE->set_url("$CFG->httpswwwroot/auth/saml/login.php");
@@ -71,6 +76,22 @@ $saml_config = get_config('auth/saml');
 $authsequence = get_enabled_auth_plugins(true);
 
 $frm = data_submitted();
+
+if (empty($errormsg) && $errorcode == AUTH_LOGIN_UNAUTHORISED) {
+    $errormsg = get_string("unauthorisedlogin", "", $frm->username);
+} else if(empty($errormsg) && $errorcode == AUTH_LOGIN_FAILED) {
+    $errormsg = get_string("invalidlogin");
+} else if (empty($errormsg) && $errorcode == AUTH_LOGIN_LOCKOUT) {
+    $errormsg = get_string('sessionerroruser', 'error');
+} else if (empty($errormsg) && !empty($SESSION->loginerrormsg)) {
+    // We had some errors before redirect, show them now.
+    $errormsg = $SESSION->loginerrormsg;
+    unset($SESSION->loginerrormsg);
+}
+
+if (!empty($errormsg) && method_exists($PAGE->requires, 'js_init_call')) {
+    $PAGE->requires->js_init_call('M.util.focus_login_error', null, true);
+}
 
 echo '<center>';
 
@@ -151,7 +172,7 @@ echo '</center>';
               if (!empty($CFG->auth_instructions)) {
                   echo format_text($CFG->auth_instructions);
               } else {
-                  print_string("loginsteps", "", "signup.php");
+                  print_string("loginsteps", "", $CFG->httpswwwroot . "/login/signup.php");
               } ?>
                  <div class="signupform">
                    <form action="<?php echo $CFG->httpswwwroot; ?>/login/signup.php" method="get" id="signup">
