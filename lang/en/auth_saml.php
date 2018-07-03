@@ -6,7 +6,7 @@ $string['auth_samltitle']  = 'SAML Authentication';
 $string['auth_samldescription'] = 'Single sign-on using SimpleSAMLphp';
 
 $string['auth_saml_samllib'] = 'SimpleSAMLphp library path';
-$string['auth_saml_samllib_description'] = 'Library path for the SimpleSAMLphp environment you want to use, e.g.: /var/www/sp/simplesamlphp/lib.';
+$string['auth_saml_samllib_description'] = '<b>Library path</b> for the SimpleSAMLphp environment you want to use, e.g.: /var/www/sp/simplesamlphp/lib.';
 $string['auth_saml_errorbadlib'] = "SimpleSAMLphp lib directory {\$a} is not correct.";
 
 $string['auth_saml_sp_source'] = 'SimpleSAMLphp SP source';
@@ -19,23 +19,24 @@ $string['auth_saml_db_reset_error'] = 'Error resetting the saml plugin values';
 $string['auth_saml_form_error'] = 'There are some errors in the form. Please, see below for correcting them';
 
 $string['auth_saml_dosinglelogout'] = 'Single logout';
-$string['auth_saml_dosinglelogout_description'] = 'Check it to enable the single logout. This will log out you from Moodle, the identity provider and all connected service providers.';
+$string['auth_saml_dosinglelogout_description'] = 'Check it to enable the single logout. This will log out you from Moodle and from the Identity Provider.';
 
 $string['auth_saml_username'] = 'SAML username mapping';
 $string['auth_saml_username_description'] = 'SAML attribute that is mapped to Moodle username - this defaults to eduPersonPrincipalName.';
 $string['auth_saml_username_not_found'] = "IdP returned a set of data that no contain the SAML username mapping field ({\$a}). This field is required to login";
 
 $string['auth_saml_supportcourses'] = 'SAML support courses';
-$string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses by the enrol/saml plugin. (Use External if your course/role mapping is in an external DB).';
+$string['auth_saml_supportcourses_description'] = 'Presently, not supported.';
 
 
 $string['auth_saml_disablejit'] = "Disable Just-in-time provisioning";
-$string['auth_saml_disablejit_description'] = "Check it in order to disable the just-in-time provisioning. When JIT is disabled, account will be not created.";
+$string['auth_saml_disablejit_description'] = "Check it in order to disable the just-in-time provisioning. When JIT is disabled, accounts will be not created.";
 
 $string['auth_saml_syncusersfrom'] = 'Synchronize users from module';
-$string['auth_saml_syncusersfrom_description'] = 'Synchronize users into Moodle using another module. The users will be created with auth = \'saml\', even though they are actually synchronized by another module. 
+$string['auth_saml_syncusersfrom_description_'] = 'Synchronize users into Moodle using another module. The users will be created with auth = \'saml\', even though they are actually synchronized by another module. 
 This allows you to create, update and delete users from for example LDAP, but log them in via SAML. Note that the module you wish to sync from must be enabled, and all sync settings should be controlled from that module, not from SAML. 
 To run the synchronization, add auth/saml/cli/sync_users.php to your cron.';
+$string['auth_saml_syncusersfrom_description'] = 'Presently, not supported.';
 
 $string['auth_saml_courses'] = 'SAML courses mapping';
 $string['auth_saml_courses_description'] = 'SAML attribute that contains courses data (default to schacUserStatus)';
@@ -128,3 +129,6 @@ $string['pluginname'] = 'SAML Authentication';
 $string['pluginnotenabled'] = 'Plugin not enabled!';
 $string['syncfromnotenabled'] = 'No external plugin selected. SAML cannot synchronize users on its own.';
 $string['unknownplugin'] = 'SAML does not know how to invoke the sync_users method of the specified plugin: ';
+$string['auth_saml_logo_path_default'] = 'logo.gif';
+$string['auth_saml_logo_info_default'] = 'SAML login';
+$string['datamapping_description'] = '';

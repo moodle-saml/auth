@@ -2,8 +2,7 @@
 
 define('SAML_INTERNAL', 1);
 
-    try{
-
+    try {
         // In order to avoid session problems we first do the SAML issues and then
         // we log in and register the attributes of user, but we need to read the value of the $CFG->dataroot
         $dataroot = null;
@@ -69,7 +68,7 @@ define('SAML_INTERNAL', 1);
         $PAGE->set_url('/auth/saml/index.php');
         $PAGE->set_context(CONTEXT_SYSTEM::instance());
 
-        $pluginconfig = get_config('auth/saml');
+        $pluginconfig = get_config('auth_saml');
         $urltogo = $CFG->wwwroot;
         if($CFG->wwwroot[strlen($CFG->wwwroot)-1] != '/') {
             $urltogo .= '/';
@@ -103,7 +102,7 @@ define('SAML_INTERNAL', 1);
      }
 
     // Get the plugin config for saml
-    $pluginconfig = get_config('auth/saml');
+    $pluginconfig = get_config('auth_saml');
 
     if (!$valid_saml_session) {
 	    // Not valid session. Ship user off to Identity Provider
@@ -147,7 +146,7 @@ define('SAML_INTERNAL', 1);
         $username = trim(strtolower($username));
 
         $saml_courses = array();
-        if($pluginconfig->supportcourses != 'nosupport' && isset($pluginconfig->samlcourses)) {
+        if($pluginconfig->supportcourses != 0 && isset($pluginconfig->samlcourses)) {
             if(!isset($saml_attributes[$pluginconfig->samlcourses])) {
                 $err['login'] = get_string("auth_saml_courses_not_found", "auth_saml", $pluginconfig->samlcourses);
                 auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile);
@@ -156,7 +155,7 @@ define('SAML_INTERNAL', 1);
         }
 
         // Obtain the course_mapping. Now $USER->mapped_courses have the mapped courses and $USER->mapped_roles the roles
-        if($pluginconfig->supportcourses != 'nosupport' ) {
+        if($pluginconfig->supportcourses != 0) {
             $any_course_active = false;
             include_once('course_mapping.php');
             if (!isset($SAML_COURSE_INFO)) {
