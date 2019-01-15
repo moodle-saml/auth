@@ -22,12 +22,14 @@ $string['auth_saml_dosinglelogout'] = 'Single logout';
 $string['auth_saml_dosinglelogout_description'] = 'Check it to enable the single logout. This will log out you from Moodle, the identity provider and all connected service providers.';
 
 $string['auth_saml_username'] = 'SAML username mapping';
-$string['auth_saml_username_description'] = 'SAML attribute that is mapped to Moodle username - this defaults to eduPersonPrincipalName.';
+$string['auth_saml_username_description'] = 'SAML attribute that is mapped to Moodle username.';
 $string['auth_saml_username_not_found'] = "IdP returned a set of data that no contain the SAML username mapping field ({\$a}). This field is required to login";
 
-$string['auth_saml_supportcourses'] = 'SAML support courses';
-$string['auth_saml_supportcourses_description'] = 'Select Internal or External to have Moodle auto-enrol users in courses by the enrol/saml plugin. (Use External if your course/role mapping is in an external DB).';
+$string['auth_saml_role'] = 'SAML System role mapping';
+$string['auth_saml_role_description'] = 'SAML attribute that contains the system role info of the user';
 
+$string['auth_saml_courses'] = 'SAML course mapping';
+$string['auth_saml_courses_description'] = 'SAML attribute that contains courses data';
 
 $string['auth_saml_disablejit'] = "Disable Just-in-time provisioning";
 $string['auth_saml_disablejit_description'] = "Check it in order to disable the just-in-time provisioning. When JIT is disabled, account will be not created.";
@@ -37,13 +39,16 @@ $string['auth_saml_syncusersfrom_description'] = 'Synchronize users into Moodle 
 This allows you to create, update and delete users from for example LDAP, but log them in via SAML. Note that the module you wish to sync from must be enabled, and all sync settings should be controlled from that module, not from SAML. 
 To run the synchronization, add auth/saml/cli/sync_users.php to your cron.';
 
-$string['auth_saml_courses'] = 'SAML courses mapping';
-$string['auth_saml_courses_description'] = 'SAML attribute that contains courses data (default to schacUserStatus)';
-$string['auth_saml_courses_not_found'] = "IdP returned a set of data that no contain the SAML courses mapping field ({\$a}). This field is required to enrol the user";
+$string['auth_saml_attrmapping_head'] = "Sometimes the names of the attributes sent by the IdP dont match the names used by Moodle for the user accounts. In this section we can set the mapping between IdP fields and Moodle fields.";
 
-$string['auth_saml_course_field_id'] = 'Field used to identify a course';
-$string['auth_saml_course_field_id_description'] = 'We can map the SAML course with the Moodle Short name or with the Course ID number ';
+$string['auth_saml_rolemapping'] = "Role Mapping";
+$string['auth_saml_rolemapping_head'] = "The IdP can use it's own role shortname. Set in this section the mapping between IdP and Moodle roles. Accepts multiple valued comma separated.";
 
+$string['auth_saml_coursemapping'] = "Course Mapping";
+$string['auth_saml_coursemapping_head'] = "The IdP can use it's own course shortname/idnumber. Set in this section the mapping between IdP and Moodle courses. Accepts multiple valued comma separated.";
+
+$string['auth_saml_supportcourses'] = 'SAML support courses';
+$string['auth_saml_supportcourses_description'] = 'Select Internal to have Moodle auto-enrol users in courses by the enrol/saml plugin. The nosupport option will disable this feature';
 
 $string['auth_saml_logo_path'] = 'SAML image';
 $string['auth_saml_logo_path_description'] = 'Image path for the SAML login button.';
@@ -112,6 +117,9 @@ $string['auth_saml_moodle_course_id_field_warning'] = 'Before add any course map
 
 $string['auth_saml_course_not_found'] = "Course saml {\$a->course} not found for the saml user {\$a->user}\n";
 
+$string['auth_saml_role_not_found'] = "Not able to retrive the role info. Review the role mapping, the SAMLResponse and the hook.";
+$string['auth_saml_status_not_found'] = "Not able to retrive the status info. Review the SAMLResponse and the hook.";
+
 $string['auth_saml_disable_debugdisplay'] = ' * Disable debugdisplay in order to hide errors in the login/enrollment process';
 $string['auth_saml_error_authentication_process'] = "Error in authentication process of {\$a}";
 $string['auth_saml_error_complete_user_data'] = "Failed to complete user data of {\$a}";
@@ -128,3 +136,5 @@ $string['pluginname'] = 'SAML Authentication';
 $string['pluginnotenabled'] = 'Plugin not enabled!';
 $string['syncfromnotenabled'] = 'No external plugin selected. SAML cannot synchronize users on its own.';
 $string['unknownplugin'] = 'SAML does not know how to invoke the sync_users method of the specified plugin: ';
+
+$string['auth_saml_hook_not_defined'] = "saml_hook_get_course_info method not defined so can't get course info. Review that the hook file contain it and that its path is properly configured at the SAML settings";

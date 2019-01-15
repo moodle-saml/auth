@@ -34,7 +34,8 @@ are they for.
 */
 function saml_hook_attribute_filter(&$saml_attributes) {
 
-    // Nos quedamos sólamente con el DNI dentro del schacPersonalUniqueID
+    // DNI in schacPersonalUniqueID
+/*
     if(isset($saml_attributes['schacPersonalUniqueID'])) {
         foreach($saml_attributes['schacPersonalUniqueID'] as $key => $value) {
             $data = array();
@@ -48,8 +49,9 @@ function saml_hook_attribute_filter(&$saml_attributes) {
             }
         }
     }
+*/
 
-    // Pasamos el irisMailMainAddress como mail si no existe
+    // irisMailMainAddress as mail if it does not exists
     if(!isset($saml_attributes['mail'])) {
         if(isset($saml_attributes['irisMailMainAddress'])) {
             $saml_attributes['mail'] = $saml_attributes['irisMailMainAddress'];
@@ -57,7 +59,7 @@ function saml_hook_attribute_filter(&$saml_attributes) {
     }
 
 
-    // Pasamos el uid como eduPersonPrincipalName o como eduPersonTargetedID
+    // uid / eduPersonTargetedID / mail as eduPersonPrincipalName 
     if(!isset($saml_attributes['eduPersonPrincipalName'])) {
         if(isset($saml_attributes['uid'])) {
             $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['uid'];
@@ -69,19 +71,6 @@ function saml_hook_attribute_filter(&$saml_attributes) {
             $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['mail'];
         }
     }
-
-
-    // Pasamos el uid como eduPersonPrincipalName
-
-    if(!isset($saml_attributes['eduPersonPrincipalName'])) {
-        if(isset($saml_attributes['uid'])) {
-            $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['uid'];
-        }
-        else if (isset($saml_attributes['mail'])) {
-            $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['mail'];
-        }
-    }
-
 }
 
 /*
@@ -151,7 +140,7 @@ function saml_hook_post_user_created($user, $saml_attributes = array()) {
 
   Right now only course_id, period, role and status are
   required, so if your Identity Provider don't retrieve country or domain info, return
-  empy values for them Ex. alternative pattern
+  empty values for them Ex. alternative pattern
   Info: 'courseData:math1:2016-17:student:active'
   
   $regex = '/courseData:(.+):(.+):(.+):(.+):(.+):(.+)/';

@@ -5,7 +5,12 @@ SAML for Moodle is an open-source implementation for federated identity-based au
 
 This plugin add SAML support to Moodle (SP) and require a [simpleSAMLphp instance to be configured as SP](https://simplesamlphp.org/docs/stable/simplesamlphp-sp)
 
-It works with Moodle 2.X and it was tested with 3.1.3
+It works with 3.4 and 3.5
+
+
+The external support for course/role mapping was removed on the version released on 2019 that works with Moodle 3.5
+and course and role mapping is now saved as Moodle settings rather than as an indepedent database table.
+
 
 Install Instruction
 -------------------
@@ -59,17 +64,14 @@ form:
         - No suport (default value): the plugin will not define course/role mapping (enrol/saml plugin not installed, support for enrolling the user into courses automatically not required).
         - Internal: the plugin will use an internal database table to map
         the courses in the next field with Moodle courses
-        - External: the plugin will use a tabla in an external database
-        to map the courses in the next field with Moodle courses.
 
      - Synchronize users from module: The SAML module does not have direct support for synchronizing users, because SAML does not allow querying for all users at once. However, your underlying identify provider might support it (LDAP does for example). This option lists all enabled plugins which have a `sync_users` function. This means that we will use that plugin's code to fetch the user data, but the users will be created with auth='saml'
 
      - SAML courses mapping: it is a SAML attribute that is mapped to Moodle
      courses data. By default, it is set to 'schacUserStatus'.
 
-     - Field used to identify a course: this can be the Short Name or the
-     Number ID and referes to the Moodle field used to identify a course
-     during the matching phase of the plugin.
+     - SAML System role mapping: it is a SAML attribute that is mapped to Moodle
+     system role info of the user.
 
      - Ignore inactive courses: if this field is checked the user will stay
      in previous enrolled courses even if the status of the course is
@@ -86,69 +88,14 @@ form:
         Surname       = sn
         Email Address = mail
 
-    - Course Mapping section:
-    .........................
-    The course mapping section allows the administrator to link saml courses
-    and moodle courses. To make it working we need to create an intermediate
-    database on where we can store this data. This database will have the
-    following internal structure:
+     - Role Mapping section:
+    ........................
+    The Identity Provider (IdP) provides info about the system role to be added,
+    or the role to be assigned during the enrollment process. In this section, 
+    you can specify the correspondence.
 
-    +--------------------+-------------+------+-----+---------+----------------+
-    | Field              | Type        | Null | Key | Default | Extra          |
-    +--------------------+-------------+------+-----+---------+----------------+
-    | course_mapping_id  | int(11)     | NO   | PRI | NULL    | auto_increment |
-    | saml_course_id     | varchar(20) | NO   |     | NULL    |                |
-    | saml_course_period | int(4)      | NO   |     | NULL    |                |
-    | lms_course_id      | text        | NO   |     | NULL    |                |
-    +--------------------+-------------+------+-----+---------+----------------+
-
-    Once we already have created the database, we need to specify the DSN (Data
-    Source Name) that has the following syntax:
-
-        MySQL
-        -----
-        mysql://user:password@host/database_name
-
-        SQLite
-        ------
-        sqlite:///path/to/database/file
-
-        PostgresSQL
-        -----------
-        postgres://user:password@host/database_name
-
-
-    Below the database DSN field we can start introducing course mappings
-    between Moodle and SAML courses.
-    No field can be null, if you try to introduce a null course mapping, this
-    data will be ignored and it will not be saved in the database.
-    If you try to introduce a duplicate course mapping this data will not be
-    saved in the database and you will be redirected to the form showing an
-    error.
-    If you want to delete a course mapping you must only check the
-    corresponding checkbox to the left and clicking to 'delete' button.
-    Also, you can update the previous introduced course mappings in every
-    moment if the new data doesn't conflicts with none of the previous
-    course mappings.
-    Is possible to introduce several course mappings at the same time, you can
-    add a new row by clicking in '+' button to the right. It no errors happen
-    while introducing the course mappings, you will be redirected to the
-    'Manage Authentication' page as with any other field of the form.
-
-
-Internal Changes
-----------------
-
-- The 'config.html' file was renamed to 'config.php' because it now has PHP
-  code.
-- Two new files was created in SAML plugin directory:
-    - 'courses.php': this file contains the needed PHP code for showing the new
-    'Course mapping' table.
-    - 'DBNewDatabase.php': this file contains a tiny function for creating a
-    database connection, because it seems there is a bug when you try to open
-    a SQLite database connection using a DSN.
-
-- In 'auth.php' we have used 'validate_form' for validating the form and store
-the errors, and 'process_config' for saving the data into the database if
-there are no errors. Also, 'sync_roles' function have been modified for
-mapping roles and courses.
+     - Course Mapping section:
+    ........................
+    The Identity Provider (IdP) provides info about the courses but the name used
+    on the IdP can differ from the one used at Moodle. In this section, 
+    you can specify the correspondence.

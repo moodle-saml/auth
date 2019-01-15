@@ -9,7 +9,8 @@ Changes:
                tightened up the session switching between ss and moodle
                Piers Harding <piers@catalyst.net.nz>
 - 2010-11    : Rewrited by Yaco Sistemas.
-- 2011-17    : Maintained by Sixto Martin Garcia <sixto.martin.garcia@gmail.com>
+- 2011-19    : Maintained by Sixto Martin Garcia <sixto.martin.garcia@gmail.com>
+  
 
 Requirements:
 - simpleSAMLphp (http://rnd.feide.no/simplesamlphp).

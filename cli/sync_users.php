@@ -89,7 +89,7 @@ Sample cron entry:
 
 $do_update = empty($options['noupdate']);
 
-$config = get_config('auth/saml');
+$config = get_config('auth_saml');
 if (!empty($config->syncusersfrom)) {
 	$otherauth = get_auth_plugin($config->syncusersfrom);
 	$otherauth->authtype = 'saml';

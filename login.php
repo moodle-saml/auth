@@ -4,9 +4,6 @@ include_once("../../config.php");
 
 global $CFG, $PAGE, $OUTPUT;
 
-//HTTPS is required in this page when $CFG->loginhttps enabled
-$PAGE->https_required();
-
 // get wantsurl from session and pass to the samlUrl
 $samlUrl = "index.php";
 if(isset($SESSION->wantsurl)) {
@@ -14,7 +11,8 @@ if(isset($SESSION->wantsurl)) {
 }
 
 // if autologin is enabled redirect to the idp without showing the login form
-$saml_config = get_config('auth/saml');
+$saml_config = get_config('auth_saml');
+
 if(isset($saml_config->autologin)  && $saml_config->autologin)
 {
        header('Location: '.$samlUrl);
@@ -67,13 +65,11 @@ if (empty($CFG->xmlstrictheaders) and !empty($CFG->loginpasswordautocomplete)) {
 
 <?php
 
-$saml_config = get_config('auth/saml');
 $authsequence = get_enabled_auth_plugins(true);
 
 $frm = data_submitted();
 
 echo '<center>';
-
 if (in_array('saml', $authsequence)){
     if (isset($saml_config->samllogoimage) && $saml_config->samllogoimage != NULL) {
         echo '<a href="' . $samlUrl . '"><img src="'.$saml_config->samllogoimage.'" border="0" alt="SAML login" ></a>';
