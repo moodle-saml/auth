@@ -178,8 +178,10 @@ if ($ADMIN->fulltree) {
             $choices[$name] = $name;
         }
     }
-    $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
-    $settings->add($setting);
+    if (!empty($choices)) {
+        $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
+        $settings->add($setting);
+    }
 
     $name = 'auth_saml/ignoreinactivecourses';
     $title = get_string('auth_saml_ignoreinactivecourses', 'auth_saml');
