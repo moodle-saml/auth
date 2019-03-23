@@ -224,7 +224,8 @@ if ($ADMIN->fulltree) {
     );
 
     foreach (get_courses() as $course) {
-        $name = 'auth_saml/course_mapping_'.strtolower($course->shortname);
+        $clean = substr(preg_replace('/[^a-z0-9_]/i', '', $course->shortname), 0, 60);
+        $name = 'auth_saml/course_mapping_'.strtolower($clean);
         $title = $course->shortname;
         if (!empty($course->idnumber)) {
             $title .=' - '.$course->idnumber;
