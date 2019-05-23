@@ -172,10 +172,10 @@ if ($ADMIN->fulltree) {
     $description = get_string('auth_saml_syncusersfrom_description', 'auth_saml');
     $default = null;
     $choices = array();
-    foreach (get_enabled_auth_plugins() as $name) {
-        $plugin = get_auth_plugin($name);
+    foreach (get_enabled_auth_plugins() as $pluginname) {
+        $plugin = get_auth_plugin($pluginname);
         if (method_exists($plugin, 'sync_users')) {
-            $choices[$name] = $name;
+            $choices[$pluginname] = $pluginname;
         }
     }
     if (!empty($choices)) {
