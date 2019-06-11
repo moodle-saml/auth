@@ -1,66 +1,95 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-    $role_mapping = get_role_mapping_for_sync($pluginconfig);
-    $course_mapping = get_course_mapping_for_sync($pluginconfig);
+/**
+ * @author  Erlend Strømsvik - Ny Media AS
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package auth/saml
+ *
+ * Authentication Plugin: SAML based SSO Authentication
+ *
+ * Authentication using SAML2 with SimpleSAMLphp.
+ *
+ * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
+ */
 
-    $mapped_roles = array();
-    $mapped_courses = array();
+if (!defined('MOODLE_INTERNAL')) {
+    // It must be included from a Moodle page.
+    die('Direct access to this script is forbidden.');
+}
 
-    foreach ($saml_courses as $key => $course) {
-        $mapped_role = $mapped_course_id = null;
-        if (function_exists('saml_hook_get_course_info')) {
-             $regs = saml_hook_get_course_info($course);
-             if ($regs) {
+$rolemapping = get_role_mapping_for_sync($pluginconfig);
+$coursemapping = get_course_mapping_for_sync($pluginconfig);
 
-                list($match, $country, $domain, $course_id, $period, $role, $status) = $regs;
+$mappedroles = [];
+$mappedcourses = [];
 
-                if (!empty($course_id)) {
+foreach ($samlcourses as $key => $course) {
+    $mappedrole = $mappedcourseid = null;
+    if (function_exists('saml_hook_get_course_info')) {
+        $regs = saml_hook_get_course_info($course);
+        if ($regs) {
+            list($match, $country, $domain, $courseid, $period, $role, $status) = $regs;
 
-                    foreach ($role_mapping as $shortname => $values) {
-                        if (in_array($role, $values)) {
-                            $mapped_role = $shortname;
-                            break;
-                        }
-                    }
-
-                    foreach ($course_mapping as $id => $values) {
-                        if (in_array($course_id, $values)) {
-                            $mapped_course_id = $id;
-                            break;
-                        }
-                    }
-
-                    if (isset($status) && isset($mapped_role) && isset($mapped_course_id)) {
-
-                        if (!in_array($mapped_role, $mapped_roles)) {
-                            $mapped_roles[] = $mapped_role;
-                        }
-
-                        $mapped_courses[$mapped_role][$status][$mapped_course_id] = array('country' => $country,
-                            'domain' => $domain,
-                            'course_id' => $mapped_course_id,
-                            'period' => $period,
-                            'role' => $mapped_role,
-                            'status' => $status,
-                        );
-                        if (!$any_course_active && $status == 'active') {
-                              $any_course_active = true;
-                        }
-                    } else if (!isset($status)) {
-                        $err['course_enrollment'][] = get_string('auth_saml_status_not_found' , 'auth_saml');
-                    } else if (!isset($role)) {
-                        $err['course_enrollment'][] = get_string('auth_saml_role_not_found' , 'auth_saml');
-                    } else {
-                        $str_obj = new stdClass();
-                        $str_obj->course = '('.$course_id.' -- '.$period.')';
-                        $str_obj->user = $username;
-                        $err['course_enrollment'][] = get_string('auth_saml_course_not_found' , 'auth_saml', $str_obj);
+            if (!empty($courseid)) {
+                foreach ($rolemapping as $shortname => $values) {
+                    if (in_array($role, $values)) {
+                        $mappedrole = $shortname;
+                        break;
                     }
                 }
-            }
-        } else {
-            $err['course_enrollment'][] = get_string('auth_saml_hook_not_defined' , 'auth_saml');
-        }
-    }
 
-    unset($saml_courses);
+                foreach ($coursemapping as $id => $values) {
+                    if (in_array($courseid, $values)) {
+                        $mappedcourseid = $id;
+                        break;
+                    }
+                }
+
+                if (isset($status) && isset($mappedrole) && isset($mappedcourseid)) {
+                    if (!in_array($mappedrole, $mappedroles)) {
+                        $mappedroles[] = $mappedrole;
+                    }
+
+                    $mappedcourses[$mappedrole][$status][$mappedcourseid] = [
+                        'country' => $country,
+                        'domain' => $domain,
+                        'course_id' => $mappedcourseid,
+                        'period' => $period,
+                        'role' => $mappedrole,
+                        'status' => $status,
+                    ];
+                    if (!$anycourseactive && $status == 'active') {
+                          $anycourseactive = true;
+                    }
+                } else if (!isset($status)) {
+                    $err['course_enrollment'][] = get_string('auth_saml_status_not_found', 'auth_saml');
+                } else if (!isset($role)) {
+                    $err['course_enrollment'][] = get_string('auth_saml_role_not_found', 'auth_saml');
+                } else {
+                    $strobj = new stdClass();
+                    $strobj->course = '('.$courseid.' -- '.$period.')';
+                    $strobj->user = $username;
+                    $err['course_enrollment'][] = get_string('auth_saml_course_not_found', 'auth_saml', $strobj);
+                }
+            }
+        }
+    } else {
+        $err['course_enrollment'][] = get_string('auth_saml_hook_not_defined', 'auth_saml');
+    }
+}
+
+unset($samlcourses);

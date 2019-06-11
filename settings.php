@@ -1,10 +1,54 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @author  Erlend Strømsvik - Ny Media AS
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package auth/saml
+ *
+ * Authentication Plugin: SAML based SSO Authentication
+ *
+ * Authentication using SAML2 with SimpleSAMLphp.
+ *
+ * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
+ */
 
 defined('MOODLE_INTERNAL') || die;
 
-
-
 if ($ADMIN->fulltree) {
+    if (!function_exists('save_in_saml_config_file')) {
+        function save_in_saml_config_file() {
+            global $CFG;
+            $samlconfigfile = $CFG->dataroot.'/saml_config.php';
+            if (file_exists($samlconfigfile)) {
+                $contentfile = file_get_contents($samlconfigfile);
+                $param = json_decode($contentfile, true);
+            } else {
+                $param = [];
+            }
+
+            $pluginconfig = get_config('auth_saml');
+            $param['samllib'] = $pluginconfig->samllib;
+
+            // Save saml settings in a file.
+            $encodedparam = json_encode($param);
+            file_put_contents($samlconfigfile, $encodedparam);
+        }
+    }
+
     global $CFG;
     /* Description */
     $settings->add(
@@ -21,23 +65,7 @@ if ($ADMIN->fulltree) {
     $default = '/var/www/sp/simplesamlphp/lib';
     $setting = new admin_setting_configtext($name, $title, $description, $default, PARAM_RAW);
 
-    $setting->set_updatedcallback(function () {
-        global $CFG;
-        $samlConfigFile = $CFG->dataroot.'/saml_config.php';
-        if (file_exists($samlConfigFile)) {
-            $contentfile = file_get_contents($samlConfigFile);
-            $saml_param = json_decode($contentfile, true);
-        } else {
-            $saml_param = array();
-        }
-
-        $pluginconfig = get_config('auth_saml');
-        $saml_param['samllib'] = $pluginconfig->samllib;
-
-        // Save saml settings in a file
-        $saml_param_encoded = json_encode($saml_param);
-        file_put_contents($samlConfigFile, $saml_param_encoded);
-    });
+    $setting->set_updatedcallback('save_in_saml_config_file');
 
     $settings->add($setting);
 
@@ -47,23 +75,7 @@ if ($ADMIN->fulltree) {
     $default = 'saml';
     $setting = new admin_setting_configtext($name, $title, $description, $default, PARAM_RAW);
 
-    $setting->set_updatedcallback(function () {
-        global $CFG;
-        $samlConfigFile = $CFG->dataroot.'/saml_config.php';
-        if (file_exists($samlConfigFile)) {
-            $contentfile = file_get_contents($samlConfigFile);
-            $saml_param = json_decode($contentfile, true);
-        } else {
-            $saml_param = array();
-        }
-
-        $pluginconfig = get_config('auth_saml');
-        $saml_param['sp_source'] = $pluginconfig->sp_source;
-
-        // Save saml settings in a file
-        $saml_param_encoded = json_encode($saml_param);
-        file_put_contents($samlConfigFile, $saml_param_encoded);
-    });
+    $setting->set_updatedcallback('save_in_saml_config_file');
 
     $settings->add($setting);
 
@@ -71,10 +83,10 @@ if ($ADMIN->fulltree) {
     $title = get_string('auth_saml_supportcourses', 'auth_saml');
     $description = get_string('auth_saml_supportcourses_description', 'auth_saml');
     $default = "nosupport";
-    $choices = array(
+    $choices = [
         "nosupport" => "nosupport",
         "internal" => "internal"
-    );
+    ];
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $settings->add($setting);
 
@@ -105,23 +117,7 @@ if ($ADMIN->fulltree) {
     $default = false;
     $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
 
-    $setting->set_updatedcallback(function () {
-        global $CFG;
-        $samlConfigFile = $CFG->dataroot.'/saml_config.php';
-        if (file_exists($samlConfigFile)) {
-            $contentfile = file_get_contents($samlConfigFile);
-            $saml_param = json_decode($contentfile, true);
-        } else {
-            $saml_param = array();
-        }
-
-        $pluginconfig = get_config('auth_saml');
-        $saml_param['dosinglelogout'] = $pluginconfig->dosinglelogout;
-
-        // Save saml settings in a file
-        $saml_param_encoded = json_encode($saml_param);
-        file_put_contents($samlConfigFile, $saml_param_encoded);
-    });
+    $setting->set_updatedcallback('save_in_saml_config_file');
 
     $settings->add($setting);
 
@@ -171,7 +167,7 @@ if ($ADMIN->fulltree) {
     $title = get_string('auth_saml_syncusersfrom', 'auth_saml');
     $description = get_string('auth_saml_syncusersfrom_description', 'auth_saml');
     $default = null;
-    $choices = array();
+    $choices = [];
     foreach (get_enabled_auth_plugins() as $name) {
         $plugin = get_auth_plugin($name);
         if (method_exists($plugin, 'sync_users')) {
@@ -190,49 +186,80 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
     $settings->add($setting);
 
-
     // Display locking / mapping of profile fields.
     $authplugin = get_auth_plugin('saml');
     $help = get_string('auth_saml_attrmapping_head', 'auth_saml');
     $help .= get_string('auth_updatelocal_expl', 'auth');
     $help .= get_string('auth_fieldlock_expl', 'auth');
-    display_auth_lock_options($settings, $authplugin->authtype, $authplugin->userfields,
-            $help, true, false, $authplugin->get_custom_user_profile_fields());
+    $customuserfields = $authplugin->get_custom_user_profile_fields();
+    display_auth_lock_options($settings, $authplugin->authtype, $authplugin->userfields, $help, true, false, $customuserfields);
+
+    require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_special_export_link.php');
+
+    require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_configtext_trim.php');
 
     $settings->add(
-        new admin_setting_heading('auth_saml/rolemapping',
+        new admin_setting_heading(
+            'auth_saml/rolemapping',
             new lang_string('auth_saml_rolemapping', 'auth_saml'),
             new lang_string('auth_saml_rolemapping_head', 'auth_saml')
         )
     );
 
-    foreach (get_all_roles() as $role) {
-        $role = $role;
-        $name = 'auth_saml/role_mapping_'.strtolower($role->shortname);
-        $title = $role->shortname;
-        $description = '';
-        $default = null;
-        $setting = new admin_setting_configtext($name, $title, $description, $default, PARAM_RAW);
-        $settings->add($setting);
+    $roles = get_all_roles();
+    if (!empty($roles)) {
+        $settings->add(
+            new auth_saml_admin_setting_export_link(
+                'auth_saml/rolemapping_export',
+                new lang_string('auth_saml_mapping_export', 'auth_saml'),
+                $CFG->wwwroot.'/auth/saml/role_mappings_to_csv.php'
+            )
+        );
+
+        foreach ($roles as $role) {
+            $role = $role;
+            $name = 'auth_saml/role_mapping_'.strtolower($role->shortname);
+            $title = $role->shortname;
+            $description = '';
+            $default = null;
+            $setting = new admin_setting_configtext_trim($name, $title, $description, $default, PARAM_RAW);
+            $settings->add($setting);
+        }
     }
 
     $settings->add(
-        new admin_setting_heading('auth_saml/coursemapping',
+        new admin_setting_heading(
+            'auth_saml/coursemapping',
             new lang_string('auth_saml_coursemapping', 'auth_saml'),
             new lang_string('auth_saml_coursemapping_head', 'auth_saml')
         )
     );
 
-    foreach (get_courses() as $course) {
-        $name = 'auth_saml/course_mapping_'.strtolower($course->shortname);
-        $title = $course->shortname;
-        if (!empty($course->idnumber)) {
-            $title .=' - '.$course->idnumber;
+    $courses = get_courses();
+
+    if (!empty($courses)) {
+        $settings->add(
+            new auth_saml_admin_setting_export_link(
+                'auth_saml/coursemapping_export',
+                new lang_string('auth_saml_mapping_export', 'auth_saml'),
+                $CFG->wwwroot.'/auth/saml/course_mappings_to_csv.php'
+            )
+        );
+
+        foreach ($courses as $course) {
+            if ($course->id == SITEID) {
+                continue;
+            }
+            $name = 'auth_saml/course_mapping_'.strtolower($course->shortname);
+            $title = $course->shortname;
+            if (!empty($course->idnumber)) {
+                $title .= ' - ' . $course->idnumber;
+            }
+            $description = '';
+            $default = null;
+            $setting = new admin_setting_configtext_trim($name, $title, $description, $default, PARAM_RAW);
+            $settings->add($setting);
         }
-        $description = '';
-        $default = null;
-        $setting = new admin_setting_configtext($name, $title, $description, $default, PARAM_RAW);
-        $settings->add($setting);
     }
 
     require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_special_javascript.php');

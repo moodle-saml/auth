@@ -15,11 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Special setting for auth_shibboleth WAYF.
+ * @author  Erlend Strømsvik - Ny Media AS
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package auth/saml
  *
- * @package    auth_shibboleth
- * @copyright  2017 Stephen Bourget
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Authentication Plugin: SAML based SSO Authentication
+ *
+ * Authentication using SAML2 with SimpleSAMLphp.
+ *
+ * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
  */
 
 defined('MOODLE_INTERNAL') || die();
@@ -36,12 +40,12 @@ class auth_saml_admin_setting_javascript extends admin_setting_heading {
         parent::__construct('javascript', '', '', '');
     }
 
-    public function output_html($data, $query='') {
+    public function output_html($data, $query = '') {
         return "
             <script>
                 function hide_or_not_courses() {
                     var value = document.getElementById('id_s_auth_saml_supportcourses').value;
-                    
+
                     document.getElementById('admin-courses').style.display = (value == 'internal') ? 'flex' : 'none';
                     document.getElementById('admin-ignoreinactivecourses').style.display = (value == 'internal') ? 'flex' : 'none';
 
@@ -67,5 +71,4 @@ class auth_saml_admin_setting_javascript extends admin_setting_heading {
 
         ";
     }
-
 }

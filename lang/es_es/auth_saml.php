@@ -1,4 +1,30 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @author  Erlend Strømsvik - Ny Media AS
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package auth/saml
+ *
+ * Authentication Plugin: SAML based SSO Authentication
+ *
+ * Authentication using SAML2 with SimpleSAMLphp.
+ *
+ * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
+ */
 
 $string['auth_saml_loginusing'] = 'Accede usando tu nombre de usuario y contraseña';
 
@@ -57,13 +83,13 @@ $string['auth_saml_disablejit_description'] = "Marcalo para inhabilitar el 'just
 $string['auth_saml_error_executing'] = "Error al ejecutar ";
 
 $string['auth_saml_mapping_dsn_description'] = 'Cadena del Nombre del Origen de Datos (dsn) para conectar con la base de datos de la asignación de cursos/roles.
-(el dsn debe ser una ruta absoluta en caso de estar usando SQLite)'; 
+(el dsn debe ser una ruta absoluta en caso de estar usando SQLite)';
 
-$string['auth_saml_course_mapping_dsn'] = 'Curso dsn'; 
-$string['auth_saml_role_mapping_dsn'] = 'Rol dsn'; 
+$string['auth_saml_course_mapping_dsn'] = 'Curso dsn';
+$string['auth_saml_role_mapping_dsn'] = 'Rol dsn';
 
-$string['auth_saml_course_mapping_sql'] = 'Curso sql'; 
-$string['auth_saml_role_mapping_sql'] = 'Rol sql'; 
+$string['auth_saml_course_mapping_sql'] = 'Curso sql';
+$string['auth_saml_role_mapping_sql'] = 'Rol sql';
 
 $string['auth_saml_mapping_dsn_examples'] = 'mysql://moodleuser:moodlepass@localhost/saml_course_mapping
 sqlite:/<path-to-db>/mapping.sqlite3
@@ -85,10 +111,10 @@ $string['auth_saml_error_creating_course_mapping'] = 'Error creando corresponden
 $string['auth_saml_sucess_creating_role_mapping'] = 'Tabla de cursos de roles creada en la base de datos de moodle';
 $string['auth_saml_error_creating_role_mapping'] = 'Error creando correspondencias de roles en la base de datos de moodle';
 
-$string['auth_saml_error_executing_course_mapping_query'] ='Error ejecutando la consulta de las correspondencias de los cursos';
+$string['auth_saml_error_executing_course_mapping_query'] = 'Error ejecutando la consulta de las correspondencias de los cursos';
 $string['auth_saml_error_attribute_course_mapping'] = 'Error en los nombres de atributo (índices) de la tabla de correspondencias de los cursos. Comprueba la sintaxis de externalcoursemappingsql';
 
-$string['auth_saml_error_executing_role_mapping_query'] ='Error ejecutando la consulta de correspondencias de los roles';
+$string['auth_saml_error_executing_role_mapping_query'] = 'Error ejecutando la consulta de correspondencias de los roles';
 $string['auth_saml_error_attribute_role_mapping'] = 'Error en los nombres de atributos (índices) de la tabla de correspondencias de rol. Comprueba la sintaxis externalrolemappingsql';
 
 
@@ -101,7 +127,7 @@ $string['auth_saml_missed_data'] = 'A los siguientes datos les faltan atributos:
 $string['auth_saml_duplicated_saml_data'] = 'El siguiente dato saml está duplicado: ';
 $string['auth_saml_duplicated_lms_data'] = 'El siguiente dato lms está duplicado: ';
 
-$string['auth_saml_moodle_course_id_field_warning'] = 'Antes de añadir mapeos de los cursos, decide que campo (shortname o numberid del curso) va a ser usado para identificar los cursos de moodle. Una vez decidido salva el formulario y entoncses los valores del shortname o numberid aparecerán en el selector del "Moodle Course Id". Ten en cuenta que el numberid es por defecto opcional en moodle pero debe de ser proporcionado si esta fue la opción elejida (o una opción en blanco aparecerá para ese curso). Si cambias el valor del campo para identificar los cursos despues de registrar mapeos, esos mapeos serán ignorados (pero seguirán almacenados en base de datos)'; 
+$string['auth_saml_moodle_course_id_field_warning'] = 'Antes de añadir mapeos de los cursos, decide que campo (shortname o numberid del curso) va a ser usado para identificar los cursos de moodle. Una vez decidido salva el formulario y entoncses los valores del shortname o numberid aparecerán en el selector del "Moodle Course Id". Ten en cuenta que el numberid es por defecto opcional en moodle pero debe de ser proporcionado si esta fue la opción elejida (o una opción en blanco aparecerá para ese curso). Si cambias el valor del campo para identificar los cursos despues de registrar mapeos, esos mapeos serán ignorados (pero seguirán almacenados en base de datos)';
 
 $string['auth_saml_course_not_found'] = "El curso saml2 {\$a->course} no fué encontrado para el usuario {\$a->user}\n";
 
