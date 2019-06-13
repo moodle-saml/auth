@@ -72,7 +72,7 @@ try {
 
         if ($samlparam->dosinglelogout) {
             $as->logout($urltogo);
-            assert("FALSE"); // The previous line issues a redirect.
+            assert(false); // The previous line issues a redirect.
         } else {
             header('Location: '.$urltogo);
             exit();
@@ -235,6 +235,10 @@ if (!$validsamlsession) {
         auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile, true);
     }
 
+    if ($pluginconfig->logextrainfo) {
+        auth_saml_log_info($username.' logged', $pluginconfig->samllogfile);
+    }
+
     // Sync system role.
     $samlroles = null;
     if (isset($pluginconfig->role) && isset($samlattributes[$pluginconfig->role])) {
@@ -261,9 +265,15 @@ if (!$validsamlsession) {
             if ($isrole) {
                 // Following calls will not create duplicates.
                 role_assign($role['id'], $user->id, $systemcontext->id, 'auth_saml');
+                if ($pluginconfig->logextrainfo) {
+                    auth_saml_log_info("Systemrole ". $role['shortname']. 'assigned to '.$username, $pluginconfig->samllogfile);
+                }
             } else {
                 // Unassign only if previously assigned by this plugin.
                 role_unassign($role['id'], $user->id, $systemcontext->id, 'auth_saml');
+                if ($pluginconfig->logextrainfo) {
+                    auth_saml_log_info("Systemrole ".$role['shortname']. 'unassigned to '.$username, $pluginconfig->samllogfile);
+                }
             }
         }
     }

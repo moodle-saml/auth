@@ -156,6 +156,13 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configtext($name, $title, $description, $default, PARAM_RAW);
     $settings->add($setting);
 
+    $name = 'auth_saml/logextrainfo';
+    $title = get_string('auth_saml_logextrainfo', 'auth_saml');
+    $description = get_string('auth_saml_logextrainfo_description', 'auth_saml');
+    $default = false;
+    $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
     $name = 'auth_saml/disablejit';
     $title = get_string('auth_saml_disablejit', 'auth_saml');
     $description = get_string('auth_saml_disablejit_description', 'auth_saml');

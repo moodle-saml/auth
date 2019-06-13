@@ -153,7 +153,10 @@ $string['auth_saml_error_complete_user_data'] = "Failed to complete user data of
 $string['auth_saml_error_complete_user_login'] = "Failed to complete user login of {\$a}";
 
 $string['auth_saml_logfile'] = 'Log file path';
-$string['auth_saml_logfile_description'] = 'Set a filename if you want log the SAML plugin errors in a different file that the syslog. (Use an absolute path or Moodle will save this file in the moodledata folder).';
+$string['auth_saml_logfile_description'] = 'Set a filename if you want log the SAML plugin errors in a different file than the syslog. (Use an absolute path or Moodle will save this file in the moodledata folder).';
+
+$string['auth_saml_logextrainfo'] = 'Log extra info';
+$string['auth_saml_logextrainfo_description'] = 'Enable it in order to log extra info like logins actions and user systemrole changes executed by the plugin';
 
 $string['auth_saml_samlhookfile'] = 'Hook file path';
 $string['auth_saml_samlhookfile_description'] = 'Set a path if you want to use a hook file that contain your specific functions. The path can either be absolute or relative to your Moodle root directory.';

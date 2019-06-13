@@ -161,6 +161,7 @@ function saml_hook_post_user_created($user, $saml_attributes = []) {
         4 - period     period of the course
         5 - role       role to be mappend with moodle role
         6 - status     'active' | 'inactive'
+        7 - group      the group inside the course
 
   The auth/saml plugin save those data that will be available
   for the enrol/saml plugin.
@@ -180,6 +181,7 @@ function saml_hook_post_user_created($user, $saml_attributes = []) {
     $regs[4] = $matches[2];   // period
     $regs[5] = $matches[3];   // role
     $regs[6] = $matches[4];   // status
+    $regs[7] = null;          // group
   }
 */
 function saml_hook_get_course_info($course) {
@@ -190,6 +192,15 @@ function saml_hook_get_course_info($course) {
     if (preg_match($regex, $course, $matches)) {
         $regs = $matches;
     }
+
+    // Example retreving course from course_id
+    // because course_id is like:  mat1-t1, mat1-t2 and t1 and t2 are
+    // groups of course mat1
+    // $course_id = $regs[3];
+    // $data = explode("-", $course_id);
+    // if (isset($data[1])) {
+    //    $regs[7] = $data[1];
+    // }
 
     return $regs;
 }

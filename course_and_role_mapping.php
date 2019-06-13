@@ -43,6 +43,10 @@ foreach ($samlcourses as $key => $course) {
         $regs = saml_hook_get_course_info($course);
         if ($regs) {
             list($match, $country, $domain, $courseid, $period, $role, $status) = $regs;
+            $group = null;
+            if (isset($regs[7])) {
+                $group = $regs[7];
+            }
 
             if (!empty($courseid)) {
                 foreach ($rolemapping as $shortname => $values) {
@@ -71,6 +75,7 @@ foreach ($samlcourses as $key => $course) {
                         'period' => $period,
                         'role' => $mappedrole,
                         'status' => $status,
+                        'group' => $group
                     ];
                     if (!$anycourseactive && $status == 'active') {
                           $anycourseactive = true;

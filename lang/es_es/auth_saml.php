@@ -139,6 +139,9 @@ $string['auth_saml_error_complete_user_login'] = "Error al completar el login de
 $string['auth_saml_logfile'] = 'Ruta del fichero de log del plugin SAML';
 $string['auth_saml_logfile_description'] = 'Establece un nombre de fichero si tu quieres loggear los errores del plugin saml en un fichero diferente que el syslog (Establece una ruta absoluta o Moodle guardará este fichero dentro de la carpeta moodledata)';
 
+$string['auth_saml_logextrainfo'] = 'Registrar información adicional';
+$string['auth_saml_logextrainfo_description'] = 'Habilítalo para registrar en el log información adicional como acciones de log in y modificaciones de roles de sistema del usuario ejecutadas por el plugin.';
+
 $string['auth_saml_samlhookfile'] = 'Ruta del fichero del hook del plugin SAML';
 $string['auth_saml_samlhookfile_description'] = 'Establece la ruta si quieres usar un fichero hook que contiene tus funciones específicas. La ruta puede ser absoluta o relativa al directorio raíz de Moodle.';
 $string['auth_saml_errorbadhook'] = "Incorrect SAML plugin hook file: {\$a}";

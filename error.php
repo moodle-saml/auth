@@ -108,6 +108,21 @@ function auth_saml_log_error($msg, $logfile) {
 }
 
 
-function auth_saml_decorate_log($msg) {
-    return $msg = date('D M d H:i:s  Y').' [client '.$_SERVER['REMOTE_ADDR'].'] [error] '.$msg."\r\n";
+function auth_saml_log_info($msg, $logfile) {
+    global $CFG;
+    if (isset($logfile) && !empty($logfile)) {
+        if (substr($logfile, 0) == '/') {
+            $destination = $logfile;
+        } else {
+            $destination = $CFG->dataroot . '/' . $logfile;
+        }
+        $msg = auth_saml_decorate_log($msg, 'info');
+        file_put_contents($destination, $msg, FILE_APPEND);
+    } else {
+        syslog(LOG_INFO, $msg);
+    }
+}
+
+function auth_saml_decorate_log($msg, $level = "error") {
+    return $msg = date('D M d H:i:s  Y').' [client '.$_SERVER['REMOTE_ADDR'].'] ['.$level.'] '.$msg."\r\n";
 }
