@@ -257,7 +257,8 @@ if ($ADMIN->fulltree) {
             if ($course->id == SITEID) {
                 continue;
             }
-            $name = 'auth_saml/course_mapping_'.strtolower($course->shortname);
+            $shortname = preg_replace("^[a-zA-Z0-9_]", "", strtolower($course->shortname)); 
+            $name = 'auth_saml/course_mapping_'.$shortname;
             $title = $course->shortname;
             if (!empty($course->idnumber)) {
                 $title .= ' - ' . $course->idnumber;
