@@ -27,16 +27,31 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-/**
- * @param int $oldversion the version we are upgrading from
- * @return bool result
- */
-function xmldb_auth_saml_upgrade($oldversion) {
-    if ($oldversion < 2018020601) {
-        upgrade_fix_config_auth_plugin_names('saml');
-        upgrade_fix_config_auth_plugin_defaults('saml');
-        upgrade_plugin_savepoint(true, 2018020601, 'auth', 'saml');
-    }
 
-    return true;
+/**
+ * Special setting for adding javascript
+ *
+ * @package    auth_saml
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class admin_setting_configtext_trim extends admin_setting_configtext {
+    public function write_setting($data) {
+        if ($this->paramtype === PARAM_INT and $data === '') {
+        // do not complain if '' used instead of 0
+            $data = 0;
+        }
+        // clean
+        $data = explode(",", $data);
+        foreach ($data as $key => $value) {
+            $data[$key] = trim($value);
+        }
+        $data = implode(",", $data);
+        
+        // $data is a string
+        $validated = $this->validate($data);
+        if ($validated !== true) {
+            return $validated;
+        }
+        return ($this->config_write($this->name, $data) ? '' : get_string('errorsetting', 'admin'));
+    }
 }

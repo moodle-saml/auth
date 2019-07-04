@@ -1,4 +1,31 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @author  Erlend Strømsvik - Ny Media AS
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package auth/saml
+ *
+ * Authentication Plugin: SAML based SSO Authentication
+ *
+ * Authentication using SAML2 with SimpleSAMLphp.
+ *
+ * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
+ */
+
 /*
 SAML Authentication Plugin Custom Hook
 
@@ -21,6 +48,10 @@ Read the comments of each function to discover when they are called and what
 are they for.
 */
 
+if (!defined('MOODLE_INTERNAL')) {
+    // It must be included from a Moodle page.
+    die('Direct access to this script is forbidden.');
+}
 
 /*
  name: saml_hook_attribute_filter
@@ -33,12 +64,11 @@ are they for.
           urn parts) or you can even remove or add attributes on the fly.
 */
 function saml_hook_attribute_filter(&$saml_attributes) {
-
     // DNI in schacPersonalUniqueID
-/*
+    /*
     if(isset($saml_attributes['schacPersonalUniqueID'])) {
         foreach($saml_attributes['schacPersonalUniqueID'] as $key => $value) {
-            $data = array();
+            $data = [];
             if(preg_match('/urn:mace:terena.org:schac:personalUniqueID:es:(.*):(.*)/', $value, $data)) {
                 $saml_attributes['schacPersonalUniqueID'][$key] = $data[2];
                 //DNI sin letra
@@ -49,25 +79,22 @@ function saml_hook_attribute_filter(&$saml_attributes) {
             }
         }
     }
-*/
+    */
 
-    // irisMailMainAddress as mail if it does not exists
-    if(!isset($saml_attributes['mail'])) {
-        if(isset($saml_attributes['irisMailMainAddress'])) {
+    // Set irisMailMainAddress as mail if it does not exists.
+    if (!isset($saml_attributes['mail'])) {
+        if (isset($saml_attributes['irisMailMainAddress'])) {
             $saml_attributes['mail'] = $saml_attributes['irisMailMainAddress'];
         }
     }
 
-
-    // uid / eduPersonTargetedID / mail as eduPersonPrincipalName 
-    if(!isset($saml_attributes['eduPersonPrincipalName'])) {
-        if(isset($saml_attributes['uid'])) {
+    // Set uid / eduPersonTargetedID / mail as eduPersonPrincipalName.
+    if (!isset($saml_attributes['eduPersonPrincipalName'])) {
+        if (isset($saml_attributes['uid'])) {
             $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['uid'];
-        }
-        else if (isset($saml_attributes['eduPersonTargetedID'])) {
+        } else if (isset($saml_attributes['eduPersonTargetedID'])) {
             $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['eduPersonTargetedID'];
-        }
-        else if (isset($saml_attributes['mail'])) {
+        } else if (isset($saml_attributes['mail'])) {
             $saml_attributes['eduPersonPrincipalName'] = $saml_attributes['mail'];
         }
     }
@@ -117,7 +144,7 @@ function saml_hook_authorize_user($username, $saml_attributes, $authorize_user) 
  purpose: use this function if you want to make changes to the user object
           or update any external system for statistics or something similar.
 */
-function saml_hook_post_user_created($user, $saml_attributes = array()) {
+function saml_hook_post_user_created($user, $saml_attributes = []) {
 
 }
 
@@ -125,15 +152,16 @@ function saml_hook_post_user_created($user, $saml_attributes = array()) {
  name: saml_hook_get_course_info
  arguments:
    - $course: string that contains info about the course
- 
+
  return array with the following indexes:
-        0 - match      matched string   
+        0 - match      matched string
         1 - country    country info
-        2 - domain     domain info 
+        2 - domain     domain info
         3 - course_id  the course id to be mapped with moodle course
         4 - period     period of the course
         5 - role       role to be mappend with moodle role
         6 - status     'active' | 'inactive'
+        7 - group      the group inside the course
 
   The auth/saml plugin save those data that will be available
   for the enrol/saml plugin.
@@ -142,10 +170,10 @@ function saml_hook_post_user_created($user, $saml_attributes = array()) {
   required, so if your Identity Provider don't retrieve country or domain info, return
   empty values for them Ex. alternative pattern
   Info: 'courseData:math1:2016-17:student:active'
-  
+
   $regex = '/courseData:(.+):(.+):(.+):(.+):(.+):(.+)/';
   if (preg_match($regex, $course, $matches) {
-    $regs = array();
+    $regs = [];
     $regs[0] = $matches[0];
     $regs[1] = null;          // country
     $regs[2] = null;          // domain
@@ -153,16 +181,26 @@ function saml_hook_post_user_created($user, $saml_attributes = array()) {
     $regs[4] = $matches[2];   // period
     $regs[5] = $matches[3];   // role
     $regs[6] = $matches[4];   // status
+    $regs[7] = null;          // group
   }
 */
 function saml_hook_get_course_info($course) {
-  $regs = null;
+    $regs = null;
 
-  $regex = '/urn:mace:terena.org:schac:userStatus:(.+):(.+):(.+):(.+):(.+):(.+)/';
+    $regex = '/urn:mace:terena.org:schac:userStatus:(.+):(.+):(.+):(.+):(.+):(.+)/';
 
-  if (preg_match($regex, $course, $matches)) {
-    $regs = $matches;
-  }
+    if (preg_match($regex, $course, $matches)) {
+        $regs = $matches;
+    }
 
-  return $regs;
+    // Example retreving course from course_id
+    // because course_id is like:  mat1-t1, mat1-t2 and t1 and t2 are
+    // groups of course mat1
+    // $course_id = $regs[3];
+    // $data = explode("-", $course_id);
+    // if (isset($data[1])) {
+    //    $regs[7] = $data[1];
+    // }
+
+    return $regs;
 }

@@ -1,4 +1,30 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * @author  Erlend Strømsvik - Ny Media AS
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @package auth/saml
+ *
+ * Authentication Plugin: SAML based SSO Authentication
+ *
+ * Authentication using SAML2 with SimpleSAMLphp.
+ *
+ * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
+ */
 
 $string['auth_saml_loginusing'] = 'Login here using your username and password';
 
@@ -35,14 +61,15 @@ $string['auth_saml_disablejit'] = "Disable Just-in-time provisioning";
 $string['auth_saml_disablejit_description'] = "Check it in order to disable the just-in-time provisioning. When JIT is disabled, account will be not created.";
 
 $string['auth_saml_syncusersfrom'] = 'Synchronize users from module';
-$string['auth_saml_syncusersfrom_description'] = 'Synchronize users into Moodle using another module. The users will be created with auth = \'saml\', even though they are actually synchronized by another module. 
-This allows you to create, update and delete users from for example LDAP, but log them in via SAML. Note that the module you wish to sync from must be enabled, and all sync settings should be controlled from that module, not from SAML. 
+$string['auth_saml_syncusersfrom_description'] = 'Synchronize users into Moodle using another module. The users will be created with auth = \'saml\', even though they are actually synchronized by another module.
+This allows you to create, update and delete users from for example LDAP, but log them in via SAML. Note that the module you wish to sync from must be enabled, and all sync settings should be controlled from that module, not from SAML.
 To run the synchronization, add auth/saml/cli/sync_users.php to your cron.';
 
 $string['auth_saml_attrmapping_head'] = "Sometimes the names of the attributes sent by the IdP dont match the names used by Moodle for the user accounts. In this section we can set the mapping between IdP fields and Moodle fields.";
 
 $string['auth_saml_rolemapping'] = "Role Mapping";
 $string['auth_saml_rolemapping_head'] = "The IdP can use it's own role shortname. Set in this section the mapping between IdP and Moodle roles. Accepts multiple valued comma separated.";
+$string['auth_saml_mapping_export'] = " Export them to a CSV";
 
 $string['auth_saml_coursemapping'] = "Course Mapping";
 $string['auth_saml_coursemapping_head'] = "The IdP can use it's own course shortname/idnumber. Set in this section the mapping between IdP and Moodle courses. Accepts multiple valued comma separated.";
@@ -69,13 +96,13 @@ $string['auth_saml_not_authorize'] = "{\$a} has no active CAV course. ";
 $string['auth_saml_error_executing'] = "Error executing ";
 
 $string['auth_saml_mapping_dsn_description'] = 'Data Source Name string for connecting to the course/role mapping database.
-(dsn must be an absolute path in case you are using SQLite)'; 
+(dsn must be an absolute path in case you are using SQLite)';
 
-$string['auth_saml_course_mapping_dsn'] = 'Course dsn'; 
-$string['auth_saml_role_mapping_dsn'] = 'Role dsn'; 
+$string['auth_saml_course_mapping_dsn'] = 'Course dsn';
+$string['auth_saml_role_mapping_dsn'] = 'Role dsn';
 
-$string['auth_saml_course_mapping_sql'] = 'Course sql'; 
-$string['auth_saml_role_mapping_sql'] = 'Role sql'; 
+$string['auth_saml_course_mapping_sql'] = 'Course sql';
+$string['auth_saml_role_mapping_sql'] = 'Role sql';
 
 $string['auth_saml_mapping_dsn_examples'] = 'mysql://moodleuser:moodlepass@localhost/saml_course_mapping
 sqlite:/<path-to-db>/mapping.sqlite3
@@ -97,10 +124,10 @@ $string['auth_saml_error_creating_course_mapping'] = 'Error creating course_mapp
 $string['auth_saml_sucess_creating_role_mapping'] = 'Table course_role created in moodle database';
 $string['auth_saml_error_creating_role_mapping'] = 'Error creating role_mapping in moodle database';
 
-$string['auth_saml_error_executing_course_mapping_query'] ='Error executing the course mapping query';
+$string['auth_saml_error_executing_course_mapping_query'] = 'Error executing the course mapping query';
 $string['auth_saml_error_attribute_course_mapping'] = 'Error in attribute names (index) of course table mapping. Check externalcoursemappingsql syntax';
 
-$string['auth_saml_error_executing_role_mapping_query'] ='Error executing the role mapping query';
+$string['auth_saml_error_executing_role_mapping_query'] = 'Error executing the role mapping query';
 $string['auth_saml_error_attribute_role_mapping'] = 'Error in attribute names (index) of role table mapping. Check externalrolemappingsql syntax';
 
 
@@ -126,7 +153,10 @@ $string['auth_saml_error_complete_user_data'] = "Failed to complete user data of
 $string['auth_saml_error_complete_user_login'] = "Failed to complete user login of {\$a}";
 
 $string['auth_saml_logfile'] = 'Log file path';
-$string['auth_saml_logfile_description'] = 'Set a filename if you want log the SAML plugin errors in a different file that the syslog. (Use an absolute path or Moodle will save this file in the moodledata folder).';
+$string['auth_saml_logfile_description'] = 'Set a filename if you want log the SAML plugin errors in a different file than the syslog. (Use an absolute path or Moodle will save this file in the moodledata folder).';
+
+$string['auth_saml_logextrainfo'] = 'Log extra info';
+$string['auth_saml_logextrainfo_description'] = 'Enable it in order to log extra info like logins actions and user systemrole changes executed by the plugin';
 
 $string['auth_saml_samlhookfile'] = 'Hook file path';
 $string['auth_saml_samlhookfile_description'] = 'Set a path if you want to use a hook file that contain your specific functions. The path can either be absolute or relative to your Moodle root directory.';
