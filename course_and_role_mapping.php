@@ -56,29 +56,31 @@ foreach ($samlcourses as $key => $course) {
                     }
                 }
 
+                $mappedcourseids = [];
                 foreach ($coursemapping as $id => $values) {
                     if (in_array($courseid, $values)) {
-                        $mappedcourseid = $id;
-                        break;
+                        $mappedcourseids[] = $id;
                     }
                 }
 
-                if (isset($status) && isset($mappedrole) && isset($mappedcourseid)) {
+                if (isset($status) && isset($mappedrole) && !empty($mappedcourseids)) {
                     if (!in_array($mappedrole, $mappedroles)) {
                         $mappedroles[] = $mappedrole;
                     }
+                    foreach ($mappedcourseids as $mappedcourseid) {
+                        $mappedcourses[$mappedrole][$status][$mappedcourseid] = [
+                            'country' => $country,
+                            'domain' => $domain,
+                            'course_id' => $mappedcourseid,
+                            'period' => $period,
+                            'role' => $mappedrole,
+                            'status' => $status,
+                            'group' => $group
+                        ];
 
-                    $mappedcourses[$mappedrole][$status][$mappedcourseid] = [
-                        'country' => $country,
-                        'domain' => $domain,
-                        'course_id' => $mappedcourseid,
-                        'period' => $period,
-                        'role' => $mappedrole,
-                        'status' => $status,
-                        'group' => $group
-                    ];
-                    if (!$anycourseactive && $status == 'active') {
-                          $anycourseactive = true;
+                        if (!$anycourseactive && $status == 'active') {
+                              $anycourseactive = true;
+                        }
                     }
                 } else if (!isset($status)) {
                     $err['course_enrollment'][] = get_string('auth_saml_status_not_found', 'auth_saml');

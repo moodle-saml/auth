@@ -56,6 +56,9 @@ form:
      - Log file path: this is the absolute path of a file where the
      plugin will log information about its actions. It is optional.
 
+     - Extra log info: Enable it in order to log extra info like logins actions
+       and user systemrole changes executed by the plugin.
+
      - Hook file path: this is the absolute path of a file with php functions
      that will be called to alter the default behaviour of this plugin. See
      the file custom_hook.php for more information.

@@ -304,7 +304,20 @@ if (!$validsamlsession) {
     set_moodle_cookie($USER->username);
 
     if (isset($err) && !empty($err)) {
-        auth_saml_error($err, $urltogo, $pluginconfig->samllogfile);
+        if ($pluginconfig->dontdisplaytouser) {
+            if (isset($err['course_enrollment'])) {
+                if (!is_array($err['course_enrollment'])) {
+                    $err['course_enrollment'] = [$err['course_enrollment']];
+                }
+                foreach ($err['course_enrollment'] as $errorMsg) {
+                    auth_saml_log_error($errorMsg, $pluginconfig->samllogfile);
+                }
+                unset($err['course_enrollment']);
+            }
+        }
+        if (!empty($err)) {
+            auth_saml_error($err, $urltogo, $pluginconfig->samllogfile);
+        }
     }
     redirect($urltogo);
 }

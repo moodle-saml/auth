@@ -168,3 +168,6 @@ $string['syncfromnotenabled'] = 'No external plugin selected. SAML cannot synchr
 $string['unknownplugin'] = 'SAML does not know how to invoke the sync_users method of the specified plugin: ';
 
 $string['auth_saml_hook_not_defined'] = "saml_hook_get_course_info method not defined so can't get course info. Review that the hook file contain it and that its path is properly configured at the SAML settings";
+$string['auth_saml_check_mapping_duplicates'] = "Find course mapping duplicates";
+$string['auth_saml_dontdisplaytouser'] = "Don't display enrollment error message to user";
+$string['auth_saml_dontdisplaytouser_description'] = "By default, if a course/role/status provided by the IdP was not able to be mapped to a Moodle object, a warning message appers to the user. Enable this flag to prevent this";

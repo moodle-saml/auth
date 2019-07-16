@@ -26,33 +26,31 @@
  * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
  */
 
-defined('MOODLE_INTERNAL') || die();
+// We load all moodle config and libs.
+require_once(dirname(dirname(__DIR__)).'/config.php');
+require_once($CFG->dirroot.'/auth/saml/locallib.php');
 
-/**
- * Special setting for adding javascript
- *
- * @package    auth_saml
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class admin_setting_configtext_trim extends admin_setting_configtext {
-    public function write_setting($data) {
-        if ($this->paramtype === PARAM_INT and $data === '') {
-        // do not complain if '' used instead of 0
-            $data = 0;
+// Validate that the user has admin rights.
+if (!is_siteadmin()) {
+    die('Only admins can execute this action.');
+}
+
+$pluginconfig = get_config('auth_saml');
+
+$coursemapping = get_course_mapping_for_sync($pluginconfig, true);
+
+$reversecoursemapping = [];
+foreach ($coursemapping as $key => $values) {
+    foreach ($values as $value) {
+        if (!isset($reversecoursemapping[$value])) {
+            $reversecoursemapping[$value] = [];
         }
-        // clean
-        $data = explode(",", $data);
-        foreach ($data as $key => $value) {
-            $data[$key] = trim($value);
-        }
-        $data = array_unique($data);
-        $data = implode(",", $data);
-        
-        // $data is a string
-        $validated = $this->validate($data);
-        if ($validated !== true) {
-            return $validated;
-        }
-        return ($this->config_write($this->name, $data) ? '' : get_string('errorsetting', 'admin'));
+        $reversecoursemapping[$value][] = $key;
+    }
+}
+
+foreach ($reversecoursemapping as $key => $values) {
+    if (count($values) > 1) {
+        print "Duplicate mapping <b>".$key.'</b> on Moodle courses: <b>'.implode('</b>, <b>', $values).'</b><br>';
     }
 }

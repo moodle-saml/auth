@@ -147,3 +147,7 @@ $string['auth_saml_samlhookfile_description'] = 'Establece la ruta si quieres us
 $string['auth_saml_errorbadhook'] = "Incorrect SAML plugin hook file: {\$a}";
 
 $string['pluginname'] = 'Autenticación SAML';
+
+$string['auth_saml_check_mapping_duplicates'] = "Encuentra mapeos de curso duplicados";
+$string['auth_saml_dontdisplaytouser'] = "No mostrar mensaje de problemas de matriculación al usuario";
+$string['auth_saml_dontdisplaytouser_description'] = "Por defecto, si un curso/role/estado proporcionado por el IdP no puede ser mapeado a un objeto de Moodle, un mensaje de alerta le aparece al usuario. Activa esta opción para ocultar dicho mensaje";

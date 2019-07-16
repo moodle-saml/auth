@@ -163,6 +163,13 @@ if ($ADMIN->fulltree) {
     $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
     $settings->add($setting);
 
+    $name = 'auth_saml/dontdisplaytouser';
+    $title = get_string('auth_saml_dontdisplaytouser', 'auth_saml');
+    $description = get_string('auth_saml_dontdisplaytouser_description', 'auth_saml');
+    $default = false;
+    $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
     $name = 'auth_saml/disablejit';
     $title = get_string('auth_saml_disablejit', 'auth_saml');
     $description = get_string('auth_saml_disablejit_description', 'auth_saml');
@@ -201,9 +208,10 @@ if ($ADMIN->fulltree) {
     $customuserfields = $authplugin->get_custom_user_profile_fields();
     display_auth_lock_options($settings, $authplugin->authtype, $authplugin->userfields, $help, true, false, $customuserfields);
 
-    require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_special_export_link.php');
-
+    require_once($CFG->dirroot.'/auth/saml/locallib.php');
+    require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_special_link.php');
     require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_configtext_trim.php');
+    require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_configtextarea_trim.php');
 
     $settings->add(
         new admin_setting_heading(
@@ -216,7 +224,7 @@ if ($ADMIN->fulltree) {
     $roles = get_all_roles();
     if (!empty($roles)) {
         $settings->add(
-            new auth_saml_admin_setting_export_link(
+            new auth_saml_admin_setting_special_link(
                 'auth_saml/rolemapping_export',
                 new lang_string('auth_saml_mapping_export', 'auth_saml'),
                 $CFG->wwwroot.'/auth/saml/role_mappings_to_csv.php'
@@ -225,11 +233,12 @@ if ($ADMIN->fulltree) {
 
         foreach ($roles as $role) {
             $role = $role;
-            $name = 'auth_saml/role_mapping_'.strtolower($role->shortname);
+            
+            $name = 'auth_saml/role_mapping_'.convert_to_valid_setting_name($role->shortname);
             $title = $role->shortname;
             $description = '';
             $default = null;
-            $setting = new admin_setting_configtext_trim($name, $title, $description, $default, PARAM_RAW);
+            $setting = new admin_setting_configtextarea_trim($name, $title, $description, $default, PARAM_RAW, '80', '1');
             $settings->add($setting);
         }
     }
@@ -246,7 +255,7 @@ if ($ADMIN->fulltree) {
 
     if (!empty($courses)) {
         $settings->add(
-            new auth_saml_admin_setting_export_link(
+            new auth_saml_admin_setting_special_link(
                 'auth_saml/coursemapping_export',
                 new lang_string('auth_saml_mapping_export', 'auth_saml'),
                 $CFG->wwwroot.'/auth/saml/course_mappings_to_csv.php'
@@ -257,16 +266,26 @@ if ($ADMIN->fulltree) {
             if ($course->id == SITEID) {
                 continue;
             }
-            $name = 'auth_saml/course_mapping_'.strtolower($course->shortname);
+            $name = 'auth_saml/course_mapping_'.convert_to_valid_setting_name($course->shortname);
             $title = $course->shortname;
             if (!empty($course->idnumber)) {
                 $title .= ' - ' . $course->idnumber;
             }
             $description = '';
             $default = null;
-            $setting = new admin_setting_configtext_trim($name, $title, $description, $default, PARAM_RAW);
+            $setting = new admin_setting_configtextarea_trim($name, $title, $description, $default, PARAM_RAW, '80', '2');
             $settings->add($setting);
         }
+
+        
+        $settings->add(
+            new auth_saml_admin_setting_special_link(
+                'auth_saml/check_mapping_duplicates',
+                new lang_string('auth_saml_check_mapping_duplicates', 'auth_saml'),
+                $CFG->wwwroot.'/auth/saml/check_course_mappings_duplicates.php',
+                true
+            )
+        );
     }
 
     require_once($CFG->dirroot.'/auth/saml/classes/admin_setting_special_javascript.php');

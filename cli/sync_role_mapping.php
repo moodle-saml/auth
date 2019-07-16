@@ -122,5 +122,8 @@ foreach ($mapping as $moodlerole => $idproles) {
         }
     }
 
-    set_config('role_mapping_'.$moodlerole, implode(",", $values), 'auth_saml');
+    $cleanmoodlerolename = convert_to_valid_setting_name($moodlerole);
+    if (!empty($cleanmoodlerolename)) {
+        set_config('role_mapping_'.$cleanmoodlerolename, implode(",", $values), 'auth_saml');
+    }
 }

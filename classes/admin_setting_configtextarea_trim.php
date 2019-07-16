@@ -34,7 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  * @package    auth_saml
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class admin_setting_configtext_trim extends admin_setting_configtext {
+class admin_setting_configtextarea_trim extends admin_setting_configtextarea {
     public function write_setting($data) {
         if ($this->paramtype === PARAM_INT and $data === '') {
         // do not complain if '' used instead of 0

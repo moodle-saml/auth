@@ -80,7 +80,7 @@ function get_role_mapping_for_sync($pluginconfig, $addempties = false) {
     $rolemapping = [];
 
     foreach (get_all_roles() as $role) {
-        $field = 'role_mapping_'.strtolower($role->shortname);
+        $field = 'role_mapping_'.trim(strtolower(str_replace("-", "_", $role->shortname)));
         if (property_exists($pluginconfig, $field)) {
             $value = $pluginconfig->{"$field"};
             if (!empty($value) || $addempties) {
@@ -107,7 +107,7 @@ function get_course_mapping_for_sync($pluginconfig, $addempties = false) {
     $courses = get_all_courses_available();
 
     foreach ($courses as $course) {
-        $field = 'course_mapping_'.strtolower($course->shortname);
+        $field = 'course_mapping_'.convert_to_valid_setting_name($course->shortname);
         if (property_exists($pluginconfig, $field)) {
             $value = $pluginconfig->{"$field"};
             if (!empty($value) || $addempties) {
@@ -123,4 +123,15 @@ function clean_values($values) {
         $values[$key] = trim($value);
     }
     return $values;
+}
+
+function convert_to_valid_setting_name($value) {
+    $value = strtolower($value);
+    $value = preg_replace('/\s+/', '', $value);
+    $value = str_replace("-", "_", $value);
+    $value = str_replace(array("á","é", "í", "ó", "ú"), array("a","e", "i", "o", "u"), $value);
+    $value = str_replace(array("ä","ë", "ï", "ö", "ü"), array("a","e", "i", "o", "u"), $value);
+    $value = str_replace("ñ", "n", $value);
+    $value = preg_replace('/[^a-z0-9_]/', '', $value);
+    return $value;
 }

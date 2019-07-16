@@ -26,33 +26,16 @@
  * Based on plugins made by Sergio Gómez (moodle_ssp) and Martin Dougiamas (Shibboleth).
  */
 
-defined('MOODLE_INTERNAL') || die();
+define('CLI_SCRIPT', true);
 
-/**
- * Special setting for adding javascript
- *
- * @package    auth_saml
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class admin_setting_configtext_trim extends admin_setting_configtext {
-    public function write_setting($data) {
-        if ($this->paramtype === PARAM_INT and $data === '') {
-        // do not complain if '' used instead of 0
-            $data = 0;
-        }
-        // clean
-        $data = explode(",", $data);
-        foreach ($data as $key => $value) {
-            $data[$key] = trim($value);
-        }
-        $data = array_unique($data);
-        $data = implode(",", $data);
-        
-        // $data is a string
-        $validated = $this->validate($data);
-        if ($validated !== true) {
-            return $validated;
-        }
-        return ($this->config_write($this->name, $data) ? '' : get_string('errorsetting', 'admin'));
-    }
-}
+// Global moodle config file.
+require(dirname(dirname(dirname(__DIR__))).'/config.php');
+global $CFG;
+require_once("$CFG->libdir/clilib.php");
+
+set_debugging(DEBUG_DEVELOPER, true);
+
+global $DB;
+
+$configTable = 'config_plugins';
+$DB->delete_records_select($configTable, "name LIKE 'course_mapping_%'");
