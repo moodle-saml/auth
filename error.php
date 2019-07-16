@@ -35,7 +35,7 @@ function auth_saml_error($err, $urltogo = false, $logfile = '', $showerror = fal
     global $CFG, $PAGE, $OUTPUT;
 
     $debug = false;
-    if ((isset($CFG->debugdisplay) && !$CFG->debugdisplay) || $showerror) {
+    if ((isset($CFG->debugdisplay) && $CFG->debugdisplay) || $showerror) {
         $debug = true;
     }
 
