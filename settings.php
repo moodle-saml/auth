@@ -42,6 +42,8 @@ if ($ADMIN->fulltree) {
 
             $pluginconfig = get_config('auth_saml');
             $param['samllib'] = $pluginconfig->samllib;
+            $param['dosinglelogout'] = $pluginconfig->dosinglelogout == '1'? 'on': 'off';
+            $param['sp_source'] = $pluginconfig->sp_source;
 
             // Save saml settings in a file.
             $encodedparam = json_encode($param);
