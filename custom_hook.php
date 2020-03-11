@@ -69,7 +69,7 @@ function saml_hook_attribute_filter(&$saml_attributes) {
     if(isset($saml_attributes['schacPersonalUniqueID'])) {
         foreach($saml_attributes['schacPersonalUniqueID'] as $key => $value) {
             $data = [];
-            if(preg_match('/urn:mace:terena.org:schac:personalUniqueID:es:(.*):(.*)/', $value, $data)) {
+            if(preg_match('/urn:schac:personalUniqueID:es:(.*):(.*)/', $value, $data)) {
                 $saml_attributes['schacPersonalUniqueID'][$key] = $data[2];
                 //DNI sin letra
                 //$saml_attributes['schacPersonalUniqueID'][$key] = substr($value[2], 0, 8);
@@ -187,7 +187,7 @@ function saml_hook_post_user_created($user, $saml_attributes = []) {
 function saml_hook_get_course_info($course) {
     $regs = null;
 
-    $regex = '/urn:mace:terena.org:schac:userStatus:(.+):(.+):(.+):(.+):(.+):(.+)/';
+    $regex = '/urn:schac:userStatus:(.+):(.+):(.+):(.+):(.+):(.+)/';
 
     if (preg_match($regex, $course, $matches)) {
         $regs = $matches;
