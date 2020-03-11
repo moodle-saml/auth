@@ -32,5 +32,5 @@ Important for enrollment!!
 ==========================
 
 This plugin suppose that the IdP send the courses data of the user in a attribute that can be configured but the pattern of the expected data is defined per the [RFC](https://tools.ietf.org/html/rfc6338)
-urn:mace:terena.org:schac:userStatus:<country>:<domain>:<course_id>:<period>:<role>:<status>
+urn:schac:userStatus:<country>:<domain>:<course_id>:<period>:<role>:<status>
 You can change this pattern editing the saml_hook_get_course_info method from the custom_hook.php file.
