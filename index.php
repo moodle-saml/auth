@@ -28,6 +28,9 @@
 
 define('SAML_INTERNAL', 1);
 
+// If we are behind a reverse proxy which terminates ssl and converts port to another, this line prevents bad redirections
+if(isset($_SERVER['HTTP_X_FORWARDED_PORT'])) $_SERVER['SERVER_PORT'] = $_SERVER['HTTP_X_FORWARDED_PORT'];
+
 try {
     // In order to avoid session problems we first do the SAML issues and then
     // we log in and register the attributes of user, but we need to read the value of the $CFG->dataroot.
