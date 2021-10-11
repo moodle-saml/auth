@@ -186,6 +186,18 @@ if (!$validsamlsession) {
         auth_saml_error($err, $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile, true);
     }
 
+    // Validate email duplication
+    if (!$userexists && empty($CFG->allowaccountssameemail)) {
+        if (isset($samlattributes[$pluginconfig->field_map_email])) {
+            $email = $samlattributes[$pluginconfig->field_map_email][0];
+            $emailExists = $DB->get_record("user", ["email" => $email]);
+            if ($emailExists != false) {
+                $err['login'] =  get_string('emailexists');
+                auth_saml_error($err, $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile, true);
+            }
+        }
+    }
+
     $samlcourses = [];
     if ($pluginconfig->supportcourses == 'internal' && isset($pluginconfig->courses)) {
         if (!isset($samlattributes[$pluginconfig->courses])) {
@@ -230,6 +242,7 @@ if (!$validsamlsession) {
 
     // Just passes time as a password. User will never log in directly to moodle with this password anyway or so we hope?
     $user = authenticate_user_login($username, time());
+
     if ($user === false) {
         $err['login'] = get_string("auth_saml_error_authentication_process", "auth_saml", $username);
         auth_saml_error($err['login'], $CFG->wwwroot.'/auth/saml/login.php', $pluginconfig->samllogfile, true);
